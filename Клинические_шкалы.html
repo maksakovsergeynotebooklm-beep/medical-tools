@@ -112,7 +112,7 @@
     <div id="tool-layout" class="layout">
       <section class="panel" aria-label="Форма инструмента">
         <form id="questionnaire" novalidate></form>
-        <div id="source-preview" class="source-preview" aria-label="Исходный бланк"></div>
+        <div id="source-preview" class="source-preview" hidden aria-label="Исходный бланк"></div>
       </section>
 
       <aside class="panel sidebar" aria-label="Результат и действия">
@@ -123,7 +123,9 @@
         </section>
         <div class="actions">
           <button id="print-result" class="button" type="button">Распечатать результат</button>
-          <a id="open-source" class="button secondary" href="doctor-tools/assets/gad-phq.pdf" target="_blank" rel="noopener">Открыть исходный бланк</a>
+          <button id="share-patient" class="button secondary" type="button">Отправить тест пациенту</button>
+          <button id="send-result" class="button secondary" type="button" hidden disabled>Отправить результат врачу</button>
+          <button id="open-source" class="button secondary" type="button">Показать исходный бланк</button>
           <button id="reset-form" class="button ghost" type="button">Сбросить ответы</button>
         </div>
         <p class="note">Результат помогает структурировать оценку и не заменяет клиническое решение врача.</p>
@@ -245,12 +247,16 @@
       const warningNode = document.getElementById('result-warning');
       const sourcePreview = document.getElementById('source-preview');
       const sourceLink = document.getElementById('open-source');
+      const sharePatientButton = document.getElementById('share-patient');
+      const sendResultButton = document.getElementById('send-result');
       const resetButton = document.getElementById('reset-form');
       const printSummary = document.getElementById('print-summary');
       const params = new URLSearchParams(window.location.search);
       const toolId = params.get('tool');
       const tool = Object.hasOwn(tools, toolId) ? tools[toolId] : null;
+      const patientMode = params.get('patient') === '1';
       let syncPainVariant = null;
+      let lastResult = { complete: false, score: null, label: '', warning: '' };
 
       function element(tag, className, text) {
         const node = document.createElement(tag);
@@ -280,6 +286,7 @@
       }
 
       function setResult(value) {
+        lastResult = value;
         resultBox.classList.toggle('incomplete', !value.complete);
         scoreNode.textContent = value.complete ? String(value.score) : '—';
         labelNode.textContent = value.complete ? value.label : 'Заполните все обязательные пункты';
@@ -290,6 +297,52 @@
         if (value.complete) lines.push(`Результат: ${value.score}`, `Интерпретация: ${value.label}`);
         if (value.warning) lines.push(`Внимание: ${value.warning}`);
         printSummary.textContent = lines.join('\n');
+        sendResultButton.disabled = !value.complete;
+      }
+
+      function renderSourcePreview() {
+        sourcePreview.replaceChildren();
+        if (tool.kind === 'resource') {
+          appendPdf(assets.bpPart1, 'Страницы 1–3');
+          appendPdf(assets.bpPart2, 'Страницы 4–5');
+        } else if (tool.source.endsWith('.pdf')) {
+          appendPdf(tool.source, 'Исходный бланк');
+        } else {
+          appendImage(tool.source, `Исходный бланк ${tool.title}`);
+        }
+        sourcePreview.hidden = false;
+        sourceLink.textContent = 'Скрыть исходный бланк';
+      }
+
+      function toggleSourcePreview() {
+        if (!sourcePreview.hidden) {
+          sourcePreview.hidden = true;
+          sourcePreview.replaceChildren();
+          sourceLink.textContent = 'Показать исходный бланк';
+          return;
+        }
+        renderSourcePreview();
+      }
+
+      async function shareOrTelegram(shareData) {
+        if (navigator.share) {
+          try {
+            await navigator.share(shareData);
+            return;
+          } catch (error) {
+            if (error && error.name === 'AbortError') return;
+          }
+        }
+        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareData.text)}`;
+        window.open(telegramUrl, '_blank', 'noopener');
+      }
+
+      function patientLink() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('tool', toolId);
+        url.searchParams.set('patient', '1');
+        url.hash = '';
+        return url.toString();
       }
 
       function collectAnswerLines() {
@@ -345,8 +398,6 @@
           form.append(fieldset);
         });
         form.addEventListener('change', () => setResult(definition.calculate(currentRadioAnswers(definition.questionCount))));
-        if (definition.source.endsWith('.pdf')) appendPdf(definition.source, 'Исходный бланк');
-        else appendImage(definition.source, `Исходный бланк ${definition.title}`);
       }
 
       function createRangeQuestion(question, index, value = 0) {
@@ -404,7 +455,6 @@
           svg.setAttribute('aria-label', 'Диаграмма колеса здоровья'); form.append(svg);
         }
         definition.questions.forEach((question, index) => form.append(createRangeQuestion(question, index)));
-        appendImage(definition.source, `Исходный бланк ${definition.title}`);
         if (definition.kind === 'wheel') drawHealthWheel(Array(12).fill(0));
       }
 
@@ -422,7 +472,7 @@
         const painField = createRangeQuestion('Интенсивность боли от 0 до 10', 0);
         form.append(painField);
         const preview = element('img', 'pain-image'); preview.src = assets.painMale; preview.alt = 'Мужская шкала интенсивности боли';
-        sourcePreview.append(preview);
+        form.append(preview);
         const painInput = form.querySelector('input[type="range"]');
         painInput.addEventListener('input', () => setResult(ClinicalScales.pain(Number(painInput.value))));
         syncPainVariant = () => {
@@ -431,7 +481,7 @@
           const source = female ? assets.painFemale : assets.painMale;
           preview.src = source;
           preview.alt = female ? 'Женская шкала интенсивности боли' : 'Мужская шкала интенсивности боли';
-          sourceLink.href = source;
+          tool.source = source;
         };
         form.addEventListener('change', (event) => {
           if (event.target.name !== 'gender') return;
@@ -467,8 +517,6 @@
 
       function renderResource() {
         form.append(element('p', 'lead', 'Список создан STRIDE BP 24 сентября 2025 года. Верхнеплечевые приборы обычно предпочтительнее запястных.'));
-        appendPdf(assets.bpPart1, 'Страницы 1–3');
-        appendPdf(assets.bpPart2, 'Страницы 4–5');
         setResult({ complete: true, score: 5, label: 'страниц справочника', warning: '' });
         resetButton.hidden = true;
       }
@@ -481,7 +529,13 @@
           return;
         }
         title.textContent = tool.title; description.textContent = tool.description; document.title = `${tool.title} — ЕС Клиника`;
-        sourceLink.href = tool.source;
+        if (patientMode) {
+          document.querySelector('.topbar').hidden = true;
+          document.querySelector('.eyebrow').textContent = 'Для пациента';
+          sharePatientButton.hidden = true;
+          sendResultButton.hidden = false;
+          sourceLink.hidden = true;
+        }
         if (tool.kind === 'pain') renderPain();
         else if (tool.kind === 'radio') renderRadioQuestions(tool);
         else if (tool.kind === 'range' || tool.kind === 'wheel') renderRangeQuestions(tool);
@@ -500,6 +554,17 @@
         setResult({ complete: false, score: null, label: '', warning: '' });
       });
       document.getElementById('print-result').addEventListener('click', () => window.print());
+      sourceLink.addEventListener('click', toggleSourcePreview);
+      sharePatientButton.addEventListener('click', () => shareOrTelegram({
+        title: tool.title,
+        text: `Пройдите тест «${tool.title}» по ссылке:`,
+        url: patientLink()
+      }));
+      sendResultButton.addEventListener('click', () => {
+        if (!lastResult.complete) return;
+        const text = `${tool.title}\nРезультат: ${lastResult.score}\nИнтерпретация: ${lastResult.label}`;
+        shareOrTelegram({ title: `Результат: ${tool.title}`, text, url: patientLink() });
+      });
       init();
     })();
   </script>
