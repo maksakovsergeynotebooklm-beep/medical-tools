@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Медицинский справочник и калькуляторы</title>
+  <style>
+    :root {
+      --bg-color: #f1f5f9;
+      --surface-color: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent-doctor: #0d9488;
+      --accent-doctor-light: #ccfbf1;
+      --accent-patient: #6366f1;
+      --accent-patient-light: #e0e7ff;
+      --border-color: #cbd5e1;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --transition: all 0.2s ease-in-out;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    [hidden] { display: none !important; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-shell {
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header.app-header {
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .app-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .app-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* Screen: Role Selection */
+    .screen-roles {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .roles-heading {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 760px;
+    }
+
+    .role-card {
+      background: var(--surface-color);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .role-card:hover,
+    .role-card:focus-visible {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .role-card:focus-visible {
+      outline: 3px solid var(--primary-light);
+    }
+
+    .role-card-doctor:hover,
+    .role-card-doctor:focus-visible {
+      border-color: var(--accent-doctor);
+    }
+
+    .role-card-patient:hover,
+    .role-card-patient:focus-visible {
+      border-color: var(--accent-patient);
+    }
+
+    .role-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 28px;
+    }
+
+    .role-card-doctor .role-icon {
+      background-color: var(--accent-doctor-light);
+      color: var(--accent-doctor);
+    }
+
+    .role-card-patient .role-icon {
+      background-color: var(--accent-patient-light);
+      color: var(--accent-patient);
+    }
+
+    .role-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .role-description {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .role-action {
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+
+    .role-card-doctor .role-action {
+      background-color: var(--accent-doctor-light);
+      color: var(--accent-doctor);
+    }
+
+    .role-card-patient .role-action {
+      background-color: var(--accent-patient-light);
+      color: var(--accent-patient);
+    }
+
+    /* Screen: Doctor View */
+    .screen-doctor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doctor-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .btn-back {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .btn-back:hover,
+    .btn-back:focus-visible {
+      background-color: var(--bg-color);
+      border-color: var(--text-muted);
+      outline: none;
+    }
+
+    .doctor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--accent-doctor-light);
+      color: var(--accent-doctor);
+      font-weight: 600;
+      font-size: 0.875rem;
+      padding: 4px 12px;
+      border-radius: 9999px;
+    }
+
+    /* Tabs Component */
+    .tablist {
+      display: flex;
+      border-bottom: 2px solid var(--border-color);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: var(--transition);
+      font-family: inherit;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background-color: rgb(0 0 0 / 0.02);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background-color: var(--surface-color);
+    }
+
+    .tab-btn:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: -2px;
+    }
+
+    /* Tab Panels */
+    .tab-panel {
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      flex: 1;
+    }
+
+    .tab-panel[hidden] {
+      display: none !important;
+    }
+
+    .catalog-intro {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .catalog-intro h3 {
+      font-size: 1.25rem;
+      margin-bottom: 4px;
+    }
+
+    .catalog-intro p,
+    .result-count {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .search-wrap {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .catalog-search {
+      width: 100%;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px 16px 14px 48px;
+      font: inherit;
+      font-size: 1rem;
+      background: #f8fafc;
+      color: var(--text-main);
+      transition: var(--transition);
+    }
+
+    .catalog-search:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+      background: #fff;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .catalog-card {
+      display: flex;
+      gap: 14px;
+      min-height: 148px;
+      padding: 18px;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      background: #fff;
+      color: inherit;
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .catalog-card:hover,
+    .catalog-card:focus-visible {
+      transform: translateY(-2px);
+      border-color: var(--accent-doctor);
+      box-shadow: var(--shadow-md);
+      outline: none;
+    }
+
+    .catalog-card[hidden] {
+      display: none;
+    }
+
+    .catalog-card-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 46px;
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: var(--accent-doctor-light);
+      font-size: 1.35rem;
+    }
+
+    .catalog-card-body {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .catalog-card-tag {
+      color: var(--accent-doctor);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .catalog-card h4 {
+      margin: 4px 0 6px;
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+
+    .catalog-card p {
+      color: var(--text-muted);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .catalog-card-action {
+      color: var(--primary-hover);
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .empty-state {
+      border: 2px dashed var(--border-color);
+      border-radius: 14px;
+      padding: 32px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      background: #f8fafc;
+    }
+
+    .empty-state[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .tab-panel { padding: 18px; }
+      .tablist { overflow-x: auto; }
+      .tab-btn { min-width: 72%; padding-inline: 12px; }
+      .catalog-intro { align-items: flex-start; flex-direction: column; }
+      .catalog-grid { grid-template-columns: 1fr; }
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Footer */
+    footer.app-footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <h1 class="app-title">Клинический ассистент и справочник</h1>
+      <p class="app-subtitle">Офлайн-инструмент для врача и пациента</p>
+    </header>
+
+    <!-- Стартовый экран: ровно два крупных варианта выбора роли -->
+    <main id="screen-roles" class="screen-roles">
+      <h2 class="roles-heading">Выберите режим работы</h2>
+      <div class="role-grid">
+        <!-- Вариант 1: Для врача (открывается без перезагрузки) -->
+        <button type="button" id="role-doctor-btn" class="role-card role-card-doctor" aria-haspopup="true" aria-controls="screen-doctor">
+          <div class="role-icon" aria-hidden="true">🩺</div>
+          <h3 class="role-title">Для врача</h3>
+          <p class="role-description">Опросники, клинические шкалы, тесты и рекомендации по лабораторному и инструментальному обследованию.</p>
+          <span class="role-action">Открыть кабинет врача →</span>
+        </button>
+
+        <!-- Вариант 2: Для пациента (относительная ссылка через file://) -->
+        <a href="patient-site/index.html" id="role-patient-link" class="role-card role-card-patient">
+          <div class="role-icon" aria-hidden="true">👤</div>
+          <h3 class="role-title">Для пациента</h3>
+          <p class="role-description">Полный сайт с понятными медицинскими объяснениями, иллюстрациями, памятками и меню всех тем.</p>
+          <span class="role-action">Перейти к материалам →</span>
+        </a>
+      </div>
+    </main>
+
+    <!-- Экран врача: открывается без перезагрузки, с возможностью возврата -->
+    <section id="screen-doctor" class="screen-doctor" hidden aria-labelledby="doctor-heading">
+      <div class="doctor-toolbar">
+        <button type="button" id="btn-back-to-roles" class="btn-back" aria-label="Вернуться к выбору роли">
+          <span aria-hidden="true">←</span> К выбору роли
+        </button>
+        <div class="doctor-badge">Режим специалиста</div>
+      </div>
+
+      <h2 id="doctor-heading" class="visually-hidden">Инструменты для врача</h2>
+
+      <!-- Вкладки врача: ровно две вкладки -->
+      <div class="tablist" role="tablist" aria-label="Разделы для врача">
+        <button type="button" role="tab" id="tab-scales" class="tab-btn active" aria-selected="true" aria-controls="panel-scales" tabindex="0">
+          Опросники / тесты / шкалы
+        </button>
+        <button type="button" role="tab" id="tab-recommendations" class="tab-btn" aria-selected="false" aria-controls="panel-recommendations" tabindex="-1">
+          Рекомендации по обследованию
+        </button>
+      </div>
+
+      <!-- Каталог врачебных шкал, опросников и калькуляторов. -->
+      <div role="tabpanel" id="panel-scales" class="tab-panel active" aria-labelledby="tab-scales">
+        <div class="catalog-intro">
+          <div>
+            <h3>Шкалы, опросники и калькуляторы</h3>
+            <p>Выберите инструмент — он откроется в отдельном регулируемом окне.</p>
+          </div>
+          <span id="tools-count" class="result-count" aria-live="polite">18 инструментов</span>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <label for="tools-search" class="visually-hidden">Поиск по шкалам и калькуляторам</label>
+          <input id="tools-search" class="catalog-search" type="search" autocomplete="off"
+            placeholder="Начните вводить: SCORE2, почки, ИМТ…">
+        </div>
+        <div id="tools-list" class="catalog-grid">
+          <a class="catalog-card" data-kind="tool" data-search="score2 сердечно сосудистый риск профилактика лпнп apob" href="Калькулятор_Медицинской_суперсилы.html?tool=s2" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">📊</span><span class="catalog-card-body"><span class="catalog-card-tag">Риск · 40–69 лет</span><h4>SCORE2</h4><p>10-летний риск фатальных и нефатальных сердечно-сосудистых событий.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="score2 op score2-op пожилые старше 70 сердечно сосудистый риск" href="Калькулятор_Медицинской_суперсилы.html?tool=op" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🧓</span><span class="catalog-card-body"><span class="catalog-card-tag">Риск · ≥70 лет</span><h4>SCORE2-OP</h4><p>Оценка сердечно-сосудистого риска у пациентов пожилого возраста.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="dlcn голландские критерии семейная гиперхолестеринемия сгхс генетика лпнп" href="Калькулятор_Медицинской_суперсилы.html?tool=dl" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🧬</span><span class="catalog-card-body"><span class="catalog-card-tag">Липиды · Генетика</span><h4>DLCN — семейная гиперхолестеринемия</h4><p>Критерии Голландской липидной клиники для диагностики СГХС.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="prevent pce pooled cohort equations acc aha риск атеросклероз ссз 30 79" href="Калькулятор_Медицинской_суперсилы.html?tool=pr" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🫀</span><span class="catalog-card-body"><span class="catalog-card-tag">ACC/AHA · 30–79 лет</span><h4>PREVENT / PCE</h4><p>10-летний риск атеросклеротических сердечно-сосудистых заболеваний.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="клинический профиль клиника ибс хсн аг диабет фп cha2ds2 vasc терапия" href="Калькулятор_Медицинской_суперсилы.html?tool=cl" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🏥</span><span class="catalog-card-body"><span class="catalog-card-tag">Комплексная оценка</span><h4>Клинический профиль</h4><p>Коморбидности, категория риска, цели и комплексный план терапии.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="имт bmi антропометрия масса тела ожирение талия рост вес" href="Калькулятор_Медицинской_суперсилы.html?tool=bmi" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">⚖️</span><span class="catalog-card-body"><span class="catalog-card-tag">Антропометрия</span><h4>ИМТ и антропометрия</h4><p>Индекс массы тела, окружность талии и оценка весовых рисков.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="почки скф хбп ckd egfr ckdepi креатинин альбуминурия kdigo" href="Калькулятор_Медицинской_суперсилы.html?tool=ckd" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🫘</span><span class="catalog-card-body"><span class="catalog-card-tag">CKD-EPI · KDIGO</span><h4>Функция почек</h4><p>Расчёт СКФ, стадия ХБП, альбуминурия и коррекция доз препаратов.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="печень фиброз стеатоз жировой гепатоз масжп нажбп fib4 hsi fli nfs" href="Калькулятор_Медицинской_суперсилы.html?tool=liver" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🫁</span><span class="catalog-card-body"><span class="catalog-card-tag">FIB-4 · HSI · FLI · NFS</span><h4>Жировой гепатоз и фиброз</h4><p>Комплексная оценка стеатоза и риска фиброза печени.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="has bled has-bled риск кровотечений фибрилляция предсердий антикоагуляция ноак" href="Калькулятор_Медицинской_суперсилы.html?tool=hbled" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🩸</span><span class="catalog-card-body"><span class="catalog-card-tag">Антикоагуляция</span><h4>HAS-BLED</h4><p>Оценка риска кровотечений у пациентов с фибрилляцией предсердий.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="сахарный диабет сд2 dm2 hba1c гликированный гемоглобин терапия инглт гпп" href="Калькулятор_Медицинской_суперсилы.html?tool=dm2" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">💊</span><span class="catalog-card-body"><span class="catalog-card-tag">EASD/ESC · Терапия</span><h4>Сахарный диабет 2 типа</h4><p>Индивидуальная цель HbA1c и алгоритм выбора сахароснижающей терапии.</p><span class="catalog-card-action">Открыть в новом окне ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="шкала интенсивности боли боль болевой синдром вас визуальная аналоговая шкала nrs pain мужчина женщина" href="Клинические_шкалы.html?tool=pain" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🌡️</span><span class="catalog-card-body"><span class="catalog-card-tag">Боль · 0–10</span><h4>Шкала интенсивности боли</h4><p>Оценка боли с мужской или женской визуальной шкалой и автоматической интерпретацией.</p><span class="catalog-card-action">Открыть шкалу ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="gad-7 gad7 тревога тревожность генерализованное тревожное расстройство опросник" href="Клинические_шкалы.html?tool=gad7" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🫨</span><span class="catalog-card-body"><span class="catalog-card-tag">Тревога · 7 вопросов</span><h4>GAD-7</h4><p>Скрининговая оценка выраженности симптомов тревоги за последние две недели.</p><span class="catalog-card-action">Открыть опросник ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="phq-9 phq9 депрессия настроение скрининг опросник" href="Клинические_шкалы.html?tool=phq9" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🧠</span><span class="catalog-card-body"><span class="catalog-card-tag">Настроение · 9 вопросов</span><h4>PHQ-9</h4><p>Оценка выраженности депрессивных симптомов за последние две недели.</p><span class="catalog-card-action">Открыть опросник ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="pss-10 pss10 стресс воспринимаемый напряжение опросник" href="Клинические_шкалы.html?tool=pss10" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🌀</span><span class="catalog-card-body"><span class="catalog-card-tag">Стресс · 10 вопросов</span><h4>PSS-10</h4><p>Оценка уровня воспринимаемого стресса в течение последнего месяца.</p><span class="catalog-card-action">Открыть опросник ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="sss-8 sss8 соматические симптомы соматизация телесные жалобы опросник" href="Клинические_шкалы.html?tool=sss8" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🩺</span><span class="catalog-card-body"><span class="catalog-card-tag">Соматические симптомы</span><h4>SSS-8</h4><p>Русскоязычная шкала выраженности восьми групп соматических симптомов.</p><span class="catalog-card-action">Открыть опросник ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="bfi усталость слабость утомление истощение краткий опросник" href="Клинические_шкалы.html?tool=bfi" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🔋</span><span class="catalog-card-body"><span class="catalog-card-tag">Усталость · BFI</span><h4>Краткий опросник усталости BFI</h4><p>Выраженность усталости и её влияние на повседневную активность за последние 24 часа.</p><span class="catalog-card-action">Открыть опросник ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="колесо здоровья качество жизни энергия сон питание самочувствие стресс отношения" href="Клинические_шкалы.html?tool=health-wheel" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🎯</span><span class="catalog-card-body"><span class="catalog-card-tag">12 областей жизни</span><h4>Колесо здоровья</h4><p>Наглядная самооценка двенадцати областей здоровья и качества жизни.</p><span class="catalog-card-action">Открыть инструмент ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="tool" data-search="тонометры артериальное давление stride bp валидированные проверенные устройства манжета" href="Клинические_шкалы.html?tool=bp-monitors" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🩸</span><span class="catalog-card-body"><span class="catalog-card-tag">STRIDE BP · Справочник</span><h4>Валидированные тонометры</h4><p>Пятистраничный список проверенных домашних приборов для измерения давления.</p><span class="catalog-card-action">Открыть справочник ↗</span></span>
+          </a>
+        </div>
+        <div id="tools-empty" class="empty-state" hidden><strong>Ничего не найдено</strong><br>Попробуйте название, сокращение или заболевание.</div>
+      </div>
+
+      <!-- Отдельный каталог планов обследования. -->
+      <div role="tabpanel" id="panel-recommendations" class="tab-panel" hidden aria-labelledby="tab-recommendations">
+        <div class="catalog-intro">
+          <div><h3>Планы обследований</h3><p>Готовые структурированные чек-листы для первичного приёма.</p></div>
+          <span id="plans-count" class="result-count" aria-live="polite">5 планов</span>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <label for="plans-search" class="visually-hidden">Поиск по планам обследований</label>
+          <input id="plans-search" class="catalog-search" type="search" autocomplete="off"
+            placeholder="Начните вводить: диабет, гипертензия, ожирение…">
+        </div>
+        <div id="plans-list" class="catalog-grid">
+          <a class="catalog-card" data-kind="plan" data-search="впервые выявленный сахарный диабет 2 типа сд2 анализы осложнения консультации" href="Калькулятор_Медицинской_суперсилы.html?plan=dm2-new" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🩸</span><span class="catalog-card-body"><span class="catalog-card-tag">Первичная диагностика</span><h4>Впервые выявленный сахарный диабет 2 типа</h4><p>Анамнез, лаборатория, скрининг осложнений, консультации и цели терапии.</p><span class="catalog-card-action">Открыть план ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="plan" data-search="впервые выявленная артериальная гипертензия аг давление обследование органы мишени" href="Калькулятор_Медицинской_суперсилы.html?plan=hypertension-new" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">💉</span><span class="catalog-card-body"><span class="catalog-card-tag">Первичная диагностика</span><h4>Впервые выявленная артериальная гипертензия</h4><p>Подтверждение АГ, оценка риска и поражения органов-мишеней.</p><span class="catalog-card-action">Открыть план ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="plan" data-search="метаболический синдром мс ожирение талия липиды глюкоза давление критерии" href="Калькулятор_Медицинской_суперсилы.html?plan=metabolic-syndrome" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">⚖️</span><span class="catalog-card-body"><span class="catalog-card-tag">Кардиометаболический риск</span><h4>Метаболический синдром</h4><p>Критерии диагноза, лабораторный и инструментальный скрининг.</p><span class="catalog-card-action">Открыть план ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="plan" data-search="ожирение избыточная масса тела вес вторичные причины дефициты бариатрия" href="Калькулятор_Медицинской_суперсилы.html?plan=obesity" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🏋️</span><span class="catalog-card-body"><span class="catalog-card-tag">Первичное обследование</span><h4>Ожирение</h4><p>Причины набора веса, метаболический скрининг и показания к бариатрии.</p><span class="catalog-card-action">Открыть план ↗</span></span>
+          </a>
+          <a class="catalog-card" data-kind="plan" data-search="вторичная артериальная гипертензия вторичная аг резистентная давление гиперальдостеронизм синдром конна альдостерон ренин феохромоцитома параганглиома метанефрины гиперкортицизм синдром кушинга реноваскулярная стеноз почечных артерий апноэ сна соас stop bang щитовидная железа гиперпаратиреоз коарктация аорты лекарственная гипертензия нпвп кок солодка" href="Калькулятор_Медицинской_суперсилы.html?plan=secondary-hypertension" target="_blank" rel="noopener">
+            <span class="catalog-card-icon" aria-hidden="true">🔍</span><span class="catalog-card-body"><span class="catalog-card-tag">8 диагностических протоколов</span><h4>Вторичная артериальная гипертензия</h4><p>Признаки, причины и восемь целевых алгоритмов диагностики вторичных форм АГ.</p><span class="catalog-card-action">Открыть план ↗</span></span>
+          </a>
+        </div>
+        <div id="plans-empty" class="empty-state" hidden><strong>План не найден</strong><br>Попробуйте заболевание или сокращение.</div>
+      </div>
+    </section>
+
+    <footer class="app-footer">
+      <span>Офлайн-приложение медицинского ассистента © 2026</span>
+    </footer>
+  </div>
+
+  <script src="catalog.js"></script>
+  <script>
+    (() => {
+      'use strict';
+
+      /* Элементы экранов */
+      const screenRoles = document.getElementById('screen-roles');
+      const screenDoctor = document.getElementById('screen-doctor');
+      const btnRoleDoctor = document.getElementById('role-doctor-btn');
+      const btnBackToRoles = document.getElementById('btn-back-to-roles');
+
+      /* Элементы вкладок */
+      const tabs = [
+        {
+          btn: document.getElementById('tab-scales'),
+          panel: document.getElementById('panel-scales')
+        },
+        {
+          btn: document.getElementById('tab-recommendations'),
+          panel: document.getElementById('panel-recommendations')
+        }
+      ];
+
+      /* Переход к экрану врача без перезагрузки страницы */
+      function showDoctorScreen() {
+        screenRoles.hidden = true;
+        screenDoctor.hidden = false;
+        btnBackToRoles.focus();
+      }
+
+      /* Возврат к экрану выбора роли без перезагрузки страницы */
+      function showRolesScreen() {
+        screenDoctor.hidden = true;
+        screenRoles.hidden = false;
+        btnRoleDoctor.focus();
+      }
+
+      /* Переключение вкладок БЕЗ пересоздания DOM */
+      function activateTab(targetIndex) {
+        tabs.forEach((tab, index) => {
+          const isTarget = index === targetIndex;
+          tab.btn.classList.toggle('active', isTarget);
+          tab.btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+          tab.btn.setAttribute('tabindex', isTarget ? '0' : '-1');
+
+          if (isTarget) {
+            tab.panel.removeAttribute('hidden');
+            tab.panel.classList.add('active');
+          } else {
+            tab.panel.setAttribute('hidden', '');
+            tab.panel.classList.remove('active');
+          }
+        });
+      }
+
+      /* Слушатели выбора роли и возврата */
+      btnRoleDoctor.addEventListener('click', (e) => {
+        e.preventDefault();
+        showDoctorScreen();
+      });
+
+      btnBackToRoles.addEventListener('click', (e) => {
+        e.preventDefault();
+        showRolesScreen();
+      });
+
+      /* Слушатели кликов по вкладкам */
+      tabs.forEach((tab, index) => {
+        tab.btn.addEventListener('click', () => {
+          activateTab(index);
+        });
+
+        /* Навигация по вкладкам с клавиатуры */
+        tab.btn.addEventListener('keydown', (e) => {
+          let nextIndex = null;
+          if (e.key === 'ArrowRight') {
+            nextIndex = (index + 1) % tabs.length;
+          } else if (e.key === 'ArrowLeft') {
+            nextIndex = (index - 1 + tabs.length) % tabs.length;
+          } else if (e.key === 'Home') {
+            nextIndex = 0;
+          } else if (e.key === 'End') {
+            nextIndex = tabs.length - 1;
+          }
+
+          if (nextIndex !== null) {
+            e.preventDefault();
+            activateTab(nextIndex);
+            tabs[nextIndex].btn.focus();
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
