@@ -41,7 +41,44 @@ function setupCatalog(inputId, listId, emptyId, countId, kind) {
   update();
 }
 
+function renderMedicalCalculators() {
+  const list = document.getElementById('tools-list');
+  const registry = window.MEDICAL_CALCULATORS || [];
+  if (!list) return;
+  const seenIds = new Set();
+  const seenTitles = new Set();
+  list.replaceChildren();
+  registry.forEach(tool => {
+    if (seenIds.has(tool.id) || seenTitles.has(tool.title)) return;
+    seenIds.add(tool.id);
+    seenTitles.add(tool.title);
+    const link = document.createElement('a');
+    link.className = 'catalog-card';
+    link.dataset.kind = 'tool';
+    link.dataset.search = `${tool.search} ${tool.title} ${tool.description} ${tool.category}`;
+    link.href = tool.route;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    const body = document.createElement('span');
+    body.className = 'catalog-card-body';
+    const tag = document.createElement('span');
+    tag.className = 'catalog-card-tag';
+    tag.textContent = tool.category;
+    const title = document.createElement('h4');
+    title.textContent = tool.title;
+    const description = document.createElement('p');
+    description.textContent = tool.description;
+    const action = document.createElement('span');
+    action.className = 'catalog-card-action';
+    action.textContent = 'Открыть в новом окне ↗';
+    body.append(tag, title, description, action);
+    link.append(body);
+    list.append(link);
+  });
+}
+
 function initializeCatalogs() {
+  renderMedicalCalculators();
   setupCatalog('tools-search', 'tools-list', 'tools-empty', 'tools-count', 'tool');
   setupCatalog('plans-search', 'plans-list', 'plans-empty', 'plans-count', 'plan');
 }

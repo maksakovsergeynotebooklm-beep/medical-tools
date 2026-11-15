@@ -1,0 +1,1001 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Медицинские калькуляторы</title><link rel="stylesheet" href="medical-calculators.css"></head><body><header class="sharing-toolbar"><a id="back-to-catalog" data-doctor-only href="Калькулякс.html">Назад к каталогу</a><button id="share-patient-link" data-doctor-only type="button">Отправить калькулятор пациенту</button><button id="share-result" type="button" disabled>Отправить результат</button><button id="print-result" type="button">Распечатать</button></header><div id="appStatus" role="status" aria-live="polite" class="sr-only"></div><main id="calculatorContent" class="migration-content"><noscript>Для расчётов включите JavaScript.</noscript><section id="tool-not-found" hidden><h1>Калькулятор не найден</h1><p>Выберите инструмент в каталоге врача.</p></section>
+<section hidden class="calculator" data-search="SCORE2-Diabetes score 2 диабет сд2 hba1c гликированный гемоглобин сердечно сосудистый риск" data-tone="sky" id="score2diabetes">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon sky">
+<div class="score2diabetes-symbol">
+<span class="heart">♥</span>
+<span class="dial"></span>
+</div></div></div><div class="calc-main">
+<div class="calc-heading">
+<h2>SCORE2-Diabetes</h2>
+<p>10-летний риск СС-событий · СД 2 типа, 40–69 лет</p>
+</div>
+<form id="score2diabetesForm" novalidate>
+<div class="field-grid">
+<div class="field full">
+<label for="score2diabetesEligibility">Применимость SCORE2-Diabetes</label>
+<div class="control-row"><select id="score2diabetesEligibility" class="long-option-select"><option value="" disabled selected>Выберите клиническую ситуацию</option><option value="eligible">СД 2 типа без ССЗ и тяжёлого поражения органов-мишеней</option><option value="ineligible">Есть ССЗ / тяжёлое поражение органов-мишеней</option><option value="other">Другая ситуация / применимость не установлена</option></select></div>
+<small class="help">Применимость должен подтвердить специалист. Не для СД 1 типа, беременности или семейной гиперхолестеринемии. Критерии поражения органов — в справке ниже.</small>
+</div><div class="field">
+<label for="score2diabetesAge">Возраст</label>
+<div class="control-row">
+<input aria-describedby="score2diabetesError" id="score2diabetesAge" inputmode="numeric" placeholder="40–69"/>
+<span class="unit-static">лет</span>
+</div></div><div class="field">
+<label>Пол при рождении</label>
+<div class="segmented">
+<label><input name="score2diabetesSex" type="radio" value="female"/><span>Женский</span></label>
+<label><input name="score2diabetesSex" type="radio" value="male"/><span>Мужской</span></label>
+</div></div><div class="field">
+<label for="score2diabetesSbp">Систолическое АД</label>
+<div class="control-row">
+<input aria-describedby="score2diabetesError" id="score2diabetesSbp" inputmode="decimal" placeholder="Например, 135"/>
+<span class="unit-static">мм рт. ст.</span>
+</div></div><div class="field">
+<label>Курение сейчас</label>
+<div class="segmented">
+<label><input name="score2diabetesSmoking" type="radio" value="0"/><span>Нет</span></label>
+<label><input name="score2diabetesSmoking" type="radio" value="1"/><span>Да</span></label>
+</div></div><div class="field">
+<label for="score2diabetesCountry">Страна для калибровки</label>
+<div class="control-row"><select id="score2diabetesCountry" class="long-option-select"><option value="" disabled selected>Выберите страну</option></select></div>
+<small class="help" id="score2diabetesRegionHint">Регион риска определяется по стране.</small>
+</div><div class="field"><label>Интерпретация</label><p class="help">ESC 2023 · сахарный диабет</p></div><div class="field full" id="score2diabetesManualRegion" hidden>
+<label for="score2diabetesRegion">Регион риска</label>
+<div class="control-row">
+<select aria-label="Регион риска" id="score2diabetesRegion" style="width:100%; border-left:0">
+<option disabled selected value="">Выберите регион</option>
+<option value="low">Низкий</option>
+<option value="moderate">Умеренный</option>
+<option value="high">Высокий</option>
+<option value="veryHigh">Очень высокий</option>
+</select>
+</div>
+<small class="help">Выбирайте вручную только при известной применимой калибровке. Для стран вне перечня ESC модель может не подходить.</small>
+</div><div class="field">
+<label for="score2diabetesTc">Общий холестерин</label>
+<div class="control-row">
+<input aria-describedby="score2diabetesError" id="score2diabetesTc" inputmode="decimal" placeholder="Например, 5,5"/>
+<select aria-label="Единица общего холестерина" id="score2diabetesTcUnit"><option selected value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select></div></div><div class="field">
+<label for="score2diabetesHdl">Холестерин ЛПВП</label>
+<div class="control-row">
+<input aria-describedby="score2diabetesError" id="score2diabetesHdl" inputmode="decimal" placeholder="Например, 1,3"/>
+<select aria-label="Единица холестерина ЛПВП" id="score2diabetesHdlUnit"><option selected value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select></div></div><div class="field"><label for="score2diabetesDiagnosisAge">Возраст диагностики СД 2 типа</label><div class="control-row"><input id="score2diabetesDiagnosisAge" inputmode="decimal" placeholder="Не старше текущего возраста" aria-describedby="score2diabetesError"/><span class="unit-static">лет</span></div></div><div class="field"><label for="score2diabetesHba1c">Гликированный гемоглобин HbA1c</label><div class="control-row"><input id="score2diabetesHba1c" inputmode="decimal" placeholder="Например, 7" aria-describedby="score2diabetesError"/><select id="score2diabetesHba1cUnit" aria-label="Единица HbA1c"><option value="percent">%</option><option value="ifcc">ммоль/моль</option></select></div></div><div class="field"><label for="score2diabetesEgfr">СКФ CKD-EPI 2009</label><div class="control-row"><input id="score2diabetesEgfr" inputmode="decimal" placeholder="Например, 90" aria-describedby="score2diabetesError"/><span class="unit-static">мл/мин/1,73 м²</span></div><small class="help">По креатинину, как в авторской модели. Не переносится из общих данных CKD-EPI 2021.</small></div><div class="field"><label for="score2diabetesUacrCategory">Альбумин / креатинин мочи (UACR)</label><div class="control-row"><select id="score2diabetesUacrCategory" class="long-option-select"><option value="" selected disabled>Выберите категорию</option><option value="a1">A1: &lt;30 мг/г (&lt;3 мг/ммоль)</option><option value="a2">A2: 30–300 мг/г (3–30 мг/ммоль)</option><option value="a3">A3: &gt;300 мг/г (&gt;30 мг/ммоль)</option></select></div><small class="help">Для проверки применимости, не входит в формулу риска.</small></div></div><div class="error" id="score2diabetesError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Рассчитать</button>
+<button class="secondary reset-card" data-form="score2diabetesForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">Риск за 10 лет</div><div class="result-number" id="score2diabetesResult">—</div><div class="result-unit">%</div></div><div class="result-interpretation" id="score2diabetesInterpretation">Введите данные пациента.</div></div>
+<p class="result-note" id="score2diabetesNote">СД 2 типа, 40–69 лет, без ССЗ и тяжёлого поражения органов-мишеней.</p>
+<button class="copy-button" data-copy="score2diabetes" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details><summary>Применимость и источники</summary>
+<p>Модель для СД 2 типа, 40–69 лет, без атеросклеротического ССЗ и тяжёлого поражения органов-мишеней. Не используйте при СД 1 типа, беременности, семейной гиперхолестеринемии или за пределами указанного возраста.</p>
+<p>Тяжёлое поражение по ESC 2023: СКФ &lt;45 независимо от альбуминурии; СКФ 45–59 с UACR 30–300 мг/г; UACR &gt;300 мг/г; либо микрососудистое поражение не менее трёх локализаций (например, альбуминурия, ретинопатия и нейропатия). Это требует отдельной оценки риска, а не расчёта SCORE2-Diabetes.</p>
+<p>Категории ESC 2023: низкий &lt;5%; умеренный 5–&lt;10%; высокий 10–&lt;20%; очень высокий ≥20%. Это не пороги обычного SCORE2.</p>
+<p>Расчёт сверяется с авторским Excel. Один женский пример в тексте публикации содержит расхождение: 7,9% вместо 7,6% по точной формуле и Excel. Коэффициенты не подгоняются под этот пример. Программные проверки не заменяют независимую клиническую валидацию.</p>
+<p>Формула и контрольные примеры: <a href="https://doi.org/10.1093/eurheartj/ehad260" target="_blank" rel="noopener noreferrer">SCORE2-Diabetes, EHJ 2023</a>, Supplementary Table 1 и авторский Excel. Применимость: <a href="https://doi.org/10.1093/eurheartj/ehad192" target="_blank" rel="noopener noreferrer">ESC 2023</a>. Перевод HbA1c: <a href="https://ngsp.org/ifccngsp.asp" target="_blank" rel="noopener noreferrer">NGSP/IFCC</a>.</p>
+</details>
+</section>
+<section hidden class="calculator" data-search="cad ptp pretest probability ибс вероятность обструктивная коронарная болезнь стенокардия" data-tone="sky" id="cadptp">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon sky"><div class="clay-glyph">CAD</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>Pre-test probability of CAD</h2><p>Базовая вероятность обструктивной ИБС по модели ESC 2019</p></div>
+<form id="cadptpForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="cadAge">Возраст</label><div class="control-row"><input id="cadAge" inputmode="numeric" placeholder="30–85"/><span class="unit-static">лет</span></div></div><div class="field"><label>Пол при рождении</label><div class="segmented"><label><input name="cadSex" type="radio" value="female"/><span>Женский</span></label><label><input name="cadSex" type="radio" value="male"/><span>Мужской</span></label></div></div><div class="field full"><label for="cadSymptoms">Ведущая характеристика симптомов</label><div class="control-row"><select class="long-option-select" id="cadSymptoms" style="width:100%;border-left:0"><option value="typical">Типичная стенокардия</option><option value="atypical">Атипичная стенокардия</option><option value="nonanginal">Неангинальная боль в груди</option><option value="dyspnea">Одышка как ведущий симптом</option></select></div></div></div><div class="error" id="cadptpError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="cadptpForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row"><div><div class="result-label">Базовая PTP</div><div class="result-number" id="cadptpResult">—</div><div class="result-unit">%</div></div><div class="result-interpretation" id="cadptpInterpretation">Введите возраст, пол и тип симптомов.</div></div>
+<p class="result-note" id="cadptpNote">Модель не учитывает факторы риска и коронарный кальций.</p>
+<button class="copy-button" data-copy="cadptp" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details><summary>Важное обновление</summary><p>В рекомендациях ESC 2024 предпочтительна risk factor-weighted clinical likelihood. Этот модуль воспроизводит базовую таблицу PTP 2019 для ориентировочной стартовой оценки.</p></details>
+</section>
+<section hidden class="calculator" data-search="cha2ds2 va vasc фибрилляция предсердий инсульт антикоагуляция" data-tone="rose" id="afstroke">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon rose"><div class="clay-glyph">AF</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>CHA₂DS₂-VA / CHA₂DS₂-VASc</h2><p>Клинические факторы тромбоэмболического риска при фибрилляции предсердий</p></div>
+<form id="afstrokeForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="afAge">Возраст</label><div class="control-row"><input id="afAge" inputmode="numeric" placeholder="Например, 72"/><span class="unit-static">лет</span></div></div><div class="field"><label>Пол при рождении</label><div class="segmented"><label><input name="afSex" type="radio" value="female"/><span>Женский</span></label><label><input name="afSex" type="radio" value="male"/><span>Мужской</span></label></div></div></div><div class="criteria-grid"><label class="criterion" for="afChf">
+<span class="criterion-copy"><strong>Сердечная недостаточность или дисфункция ЛЖ</strong></span>
+<input id="afChf" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="afHtn">
+<span class="criterion-copy"><strong>Артериальная гипертензия</strong></span>
+<input id="afHtn" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="afDiabetes">
+<span class="criterion-copy"><strong>Сахарный диабет</strong></span>
+<input id="afDiabetes" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="afStroke">
+<span class="criterion-copy"><strong>Инсульт, ТИА или системная эмболия в анамнезе</strong></span>
+<input id="afStroke" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+2</span>
+</label>
+<label class="criterion" for="afVascular">
+<span class="criterion-copy"><strong>Сосудистое заболевание</strong><small>Инфаркт миокарда, заболевание периферических артерий или аортальная бляшка.</small></span>
+<input id="afVascular" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label></div><div class="error" id="afstrokeError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="afstrokeForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row"><div><div class="result-label">CHA₂DS₂-VA</div><div class="result-number" id="afstrokeResult">—</div><div class="result-unit">баллов</div></div><div class="result-interpretation" id="afstrokeInterpretation">Введите возраст, пол и отметьте факторы риска.</div></div>
+<p class="result-note" id="afstrokeNote">Балльная шкала не заменяет оценку показаний, противопоказаний и предпочтений пациента.</p>
+<button class="copy-button" data-copy="afstroke" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details><summary>Начисление баллов</summary><p>Возраст 65–74 года — 1 балл; возраст ≥75 лет — 2 балла; инсульт, ТИА или системная эмболия — 2 балла; остальные отмеченные факторы — по 1 баллу. В CHA₂DS₂-VASc женский пол добавляет 1 балл.</p></details>
+</section>
+<section hidden class="calculator" data-search="grace acute coronary syndrome окс смертность инвазивная стратегия" data-tone="coral" id="grace">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon coral"><div class="clay-glyph">GR</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>GRACE ACS</h2><p>Балльная оценка риска при остром коронарном синдроме</p></div>
+<form id="graceForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="graceAge">Возраст</label><div class="control-row"><input id="graceAge" inputmode="numeric" placeholder="Например, 68"/><span class="unit-static">лет</span></div></div><div class="field"><label for="graceHr">Частота пульса</label><div class="control-row"><input id="graceHr" inputmode="decimal" placeholder="Например, 88"/><span class="unit-static">/мин</span></div></div><div class="field"><label for="graceSbp">Систолическое АД</label><div class="control-row"><input id="graceSbp" inputmode="decimal" placeholder="Например, 125"/><span class="unit-static">мм рт. ст.</span></div></div><div class="field"><label for="graceCr">Креатинин</label><div class="control-row"><input id="graceCr" inputmode="decimal" placeholder="Например, 95"/><select aria-label="Единицы креатинина" id="graceCrUnit"><option value="umol">мкмоль/л</option><option value="mgdl">мг/дл</option></select></div></div><div class="field full"><label for="graceKillip">Класс Killip</label><div class="control-row"><select class="long-option-select" id="graceKillip" style="width:100%;border-left:0"><option value="1">I — нет признаков сердечной недостаточности</option><option value="2">II — хрипы и/или набухание яремных вен</option><option value="3">III — отёк лёгких</option><option value="4">IV — кардиогенный шок</option></select></div></div></div><div class="criteria-grid">
+<label class="criterion" for="graceArrest"><span class="criterion-copy"><strong>Остановка кровообращения при поступлении</strong></span><input id="graceArrest" type="checkbox"/><span class="criterion-check">+39</span></label>
+<label class="criterion" for="graceSt"><span class="criterion-copy"><strong>Отклонение сегмента ST</strong></span><input id="graceSt" type="checkbox"/><span class="criterion-check">+28</span></label>
+<label class="criterion" for="graceBio"><span class="criterion-copy"><strong>Повышенные кардиомаркеры</strong></span><input id="graceBio" type="checkbox"/><span class="criterion-check">+14</span></label>
+</div><div class="error" id="graceError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="graceForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row"><div><div class="result-label">GRACE</div><div class="result-number" id="graceResult">—</div><div class="result-unit">баллов</div></div><div class="result-interpretation" id="graceInterpretation">Введите данные пациента.</div></div>
+<p class="result-note" id="graceNote">Балльная модель поддерживает стратификацию риска, но не должна задерживать неотложное лечение.</p>
+<button class="copy-button" data-copy="grace" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details><summary>Применимость и ограничения</summary><p>Используется классическая балльная модель GRACE. Порог &gt;140 применяется как маркер высокого риска при NSTE-ACS. Точные нелинейные вероятности GRACE 2.0 могут отличаться.</p></details>
+</section>
+<section hidden class="calculator" data-search="precise dapt bleeding pci датт кровотечение" data-tone="lavender" id="precisedapt">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon lavender"><div class="clay-glyph">PD</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>PRECISE-DAPT</h2><p>Риск внебольничного кровотечения во время двойной антиагрегантной терапии</p></div>
+<form id="precisedaptForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="pdAge">Возраст</label><div class="control-row"><input id="pdAge" inputmode="numeric" placeholder="Например, 68"/><span class="unit-static">лет</span></div></div><div class="field"><label for="pdCrcl">Клиренс креатинина</label><div class="control-row"><input id="pdCrcl" inputmode="decimal" placeholder="Например, 62"/><span class="unit-static">мл/мин</span></div></div><div class="field"><label for="pdHb">Гемоглобин</label><div class="control-row"><input id="pdHb" inputmode="decimal" placeholder="Например, 132"/><select aria-label="Единицы гемоглобина" id="pdHbUnit"><option value="gl">г/л</option><option value="gdl">г/дл</option></select></div></div><div class="field"><label for="pdWbc">Лейкоциты</label><div class="control-row"><input id="pdWbc" inputmode="decimal" placeholder="Например, 7,4"/><span class="unit-static">10⁹/л</span></div></div><div class="field full"><label>Спонтанное кровотечение в анамнезе, потребовавшее медицинской помощи</label><div class="segmented"><label><input checked name="pdBleed" type="radio" value="0"/><span>Нет</span></label><label><input name="pdBleed" type="radio" value="1"/><span>Да</span></label></div></div></div><div class="error" id="precisedaptError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="precisedaptForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row"><div><div class="result-label">PRECISE-DAPT</div><div class="result-number" id="precisedaptResult">—</div><div class="result-unit">баллов</div></div><div class="result-interpretation" id="precisedaptInterpretation">Введите пять параметров.</div></div>
+<p class="result-note" id="precisedaptNote">Порог ≥25 указывает на высокий риск кровотечения.</p>
+<button class="copy-button" data-copy="precisedapt" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details><summary>Метод расчёта</summary><p>Используется опубликованная пятифакторная модель с ограничениями диапазонов предикторов и итоговой шкалой 0–100. Значение ≥25 соответствует высокому риску кровотечения.</p></details>
+</section>
+<section hidden class="calculator" data-search="qtc qt bazett fridericia framingham hodges экг" data-tone="plum" id="qtc">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon plum"><div class="clay-glyph">QT</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>Корригированный интервал QT — QTc</h2><p>Bazett, Fridericia, Framingham и Hodges</p></div>
+<form id="qtcForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="qtcQt">Измеренный QT</label><div class="control-row"><input id="qtcQt" inputmode="decimal" placeholder="Например, 410"/><select aria-label="Единица интервала QT" id="qtcQtUnit"><option selected value="ms">мс</option><option value="s">с</option></select></div></div><div class="field"><label>Источник частоты</label><div class="segmented"><label><input checked name="qtcInputMode" type="radio" value="hr"/><span>ЧСС</span></label><label><input name="qtcInputMode" type="radio" value="rr"/><span>RR</span></label></div></div><div class="field mode-panel" id="qtcHrPanel"><label for="qtcHr">ЧСС</label><div class="control-row"><input id="qtcHr" inputmode="decimal" placeholder="Например, 72"/><span class="unit-static">/мин</span></div></div><div class="field mode-panel" hidden id="qtcRrPanel"><label for="qtcRr">Интервал RR</label><div class="control-row"><input id="qtcRr" inputmode="decimal" placeholder="Например, 830"/><select aria-label="Единица интервала RR" id="qtcRrUnit"><option selected value="ms">мс</option><option value="s">с</option></select></div></div><div class="field full"><label>Пол при рождении</label><div class="segmented"><label><input name="qtcSex" type="radio" value="female"/><span>Женский</span></label><label><input name="qtcSex" type="radio" value="male"/><span>Мужской</span></label></div></div></div><div class="error" id="qtcError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="qtcForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row"><div><div class="result-label">QTc Fridericia</div><div class="result-number" id="qtcResult">—</div><div class="result-unit">мс</div></div><div class="result-interpretation" id="qtcInterpretation">Введите QT, ЧСС или RR и пол.</div></div><div class="metric-grid" id="qtcMetrics"><div><small>Bazett</small><strong>—</strong></div><div><small>Fridericia</small><strong>—</strong></div><div><small>Framingham</small><strong>—</strong></div><div><small>Hodges</small><strong>—</strong></div></div>
+<p class="result-note" id="qtcNote">Bazett склонен завышать QTc при тахикардии и занижать при брадикардии. При широком QRS требуется отдельная оценка.</p><button class="copy-button" data-copy="qtc" disabled type="button">Копировать результат</button>
+</div></div></div></section>
+<section hidden class="calculator" data-search="wells perc тэла тгв d димер венозный тромбоз" data-tone="blue" id="vte">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon blue"><div class="clay-glyph">VTE</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>Подозрение на ВТЭО</h2><p>Wells для ТЭЛА и ТГВ, PERC и возраст-скорректированный D-димер</p></div>
+<form id="vteForm" novalidate>
+<div class="field full"><label>Инструмент</label><div class="segmented segmented-four">
+<label><input checked name="vteMode" type="radio" value="pe"/><span>Wells ТЭЛА</span></label>
+<label><input name="vteMode" type="radio" value="perc"/><span>PERC</span></label>
+<label><input name="vteMode" type="radio" value="dvt"/><span>Wells ТГВ</span></label>
+<label><input name="vteMode" type="radio" value="ddimer"/><span>D-димер</span></label>
+</div></div><div class="mode-panel vte-panel" id="vtePePanel"><div class="criteria-grid"><label class="criterion" for="vtePeDvtSigns">
+<span class="criterion-copy"><strong>Клинические признаки ТГВ</strong><small>Отёк ноги и болезненность при пальпации глубоких вен.</small></span>
+<input id="vtePeDvtSigns" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+3</span>
+</label>
+<label class="criterion" for="vtePeAltLess">
+<span class="criterion-copy"><strong>Альтернативный диагноз менее вероятен, чем ТЭЛА</strong></span>
+<input id="vtePeAltLess" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+3</span>
+</label>
+<label class="criterion" for="vtePeHr">
+<span class="criterion-copy"><strong>ЧСС &gt;100/мин</strong></span>
+<input id="vtePeHr" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1,5</span>
+</label>
+<label class="criterion" for="vtePeImmobil">
+<span class="criterion-copy"><strong>Иммобилизация &gt;3 дней или операция за последние 4 недели</strong></span>
+<input id="vtePeImmobil" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1,5</span>
+</label>
+<label class="criterion" for="vtePePrevious">
+<span class="criterion-copy"><strong>ТГВ или ТЭЛА в анамнезе</strong></span>
+<input id="vtePePrevious" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1,5</span>
+</label>
+<label class="criterion" for="vtePeHemoptysis">
+<span class="criterion-copy"><strong>Кровохарканье</strong></span>
+<input id="vtePeHemoptysis" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vtePeCancer">
+<span class="criterion-copy"><strong>Активное онкологическое заболевание</strong><small>Лечение сейчас, в последние 6 месяцев или паллиативная помощь.</small></span>
+<input id="vtePeCancer" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label></div></div><div class="mode-panel vte-panel" hidden id="vtePercPanel">
+<div class="info-callout"><strong>Использовать только при низкой предварительной клинической вероятности ТЭЛА.</strong> Все восемь критериев должны быть отрицательными.</div><div class="field-grid">
+<div class="field"><label for="vtePercAge">Возраст</label><div class="control-row"><input id="vtePercAge" inputmode="numeric" placeholder="&lt;50"/><span class="unit-static">лет</span></div></div><div class="field"><label for="vtePercPulse">Пульс</label><div class="control-row"><input id="vtePercPulse" inputmode="numeric" placeholder="&lt;100"/><span class="unit-static">/мин</span></div></div><div class="field"><label for="vtePercSpo2">SpO₂ на воздухе</label><div class="control-row"><input id="vtePercSpo2" inputmode="decimal" placeholder="≥95"/><span class="unit-static">%</span></div></div></div><div class="criteria-grid"><label class="criterion" for="vtePercLeg">
+<span class="criterion-copy"><strong>Односторонний отёк ноги</strong></span>
+<input id="vtePercLeg" type="checkbox"/>
+<span class="criterion-check">Да</span>
+</label>
+<label class="criterion" for="vtePercHemoptysis">
+<span class="criterion-copy"><strong>Кровохарканье</strong></span>
+<input id="vtePercHemoptysis" type="checkbox"/>
+<span class="criterion-check">Да</span>
+</label>
+<label class="criterion" for="vtePercPrevious">
+<span class="criterion-copy"><strong>ТГВ или ТЭЛА в анамнезе</strong></span>
+<input id="vtePercPrevious" type="checkbox"/>
+<span class="criterion-check">Да</span>
+</label>
+<label class="criterion" for="vtePercTrauma">
+<span class="criterion-copy"><strong>Операция или значимая травма за последние 4 недели</strong></span>
+<input id="vtePercTrauma" type="checkbox"/>
+<span class="criterion-check">Да</span>
+</label>
+<label class="criterion" for="vtePercHormone">
+<span class="criterion-copy"><strong>Экзогенные эстрогены</strong></span>
+<input id="vtePercHormone" type="checkbox"/>
+<span class="criterion-check">Да</span>
+</label></div></div><div class="mode-panel vte-panel" hidden id="vteDvtPanel"><div class="criteria-grid"><label class="criterion" for="vteDvtCancer">
+<span class="criterion-copy"><strong>Активное онкологическое заболевание</strong></span>
+<input id="vteDvtCancer" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtParalysis">
+<span class="criterion-copy"><strong>Парез, паралич или гипсовая иммобилизация ноги</strong></span>
+<input id="vteDvtParalysis" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtBed">
+<span class="criterion-copy"><strong>Постельный режим ≥3 дней или большая операция за 12 недель</strong></span>
+<input id="vteDvtBed" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtTender">
+<span class="criterion-copy"><strong>Болезненность по ходу глубоких вен</strong></span>
+<input id="vteDvtTender" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtWholeLeg">
+<span class="criterion-copy"><strong>Отёк всей ноги</strong></span>
+<input id="vteDvtWholeLeg" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtCalf">
+<span class="criterion-copy"><strong>Окружность голени ≥3 см по сравнению с другой ногой</strong></span>
+<input id="vteDvtCalf" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtPitting">
+<span class="criterion-copy"><strong>Ямочный отёк только симптомной ноги</strong></span>
+<input id="vteDvtPitting" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtCollateral">
+<span class="criterion-copy"><strong>Коллатеральные поверхностные вены, не варикозные</strong></span>
+<input id="vteDvtCollateral" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtPrevious">
+<span class="criterion-copy"><strong>Ранее подтверждённый ТГВ</strong></span>
+<input id="vteDvtPrevious" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="vteDvtAlternative">
+<span class="criterion-copy"><strong>Альтернативный диагноз не менее вероятен</strong></span>
+<input id="vteDvtAlternative" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">−2</span>
+</label></div></div><div class="mode-panel vte-panel" hidden id="vteDdimerPanel">
+<div class="field-grid">
+<div class="field"><label for="vteDdimAge">Возраст</label><div class="control-row"><input id="vteDdimAge" inputmode="numeric" placeholder="Например, 72"/><span class="unit-static">лет</span></div></div><div class="field"><label for="vteDdimValue">Результат D-димера</label><div class="control-row"><input id="vteDdimValue" inputmode="decimal" placeholder="Например, 620"/><select aria-label="Единицы D-димера" id="vteDdimUnit"><option value="feu">нг/мл FEU</option><option value="ddu">нг/мл DDU</option></select></div></div></div><div class="info-callout">Для возраста ≤50 лет используется стандартный порог: 500 нг/мл FEU или 250 нг/мл DDU. После 50 лет: возраст ×10 FEU или возраст ×5 DDU.</div></div><div class="error" id="vteError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="vteForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box"><div class="result-row"><div><div class="result-label">Результат</div><div class="result-number" id="vteResult">—</div><div class="result-unit" id="vteResultUnit">баллов</div></div><div class="result-interpretation" id="vteInterpretation">Выберите инструмент и заполните данные.</div></div><p class="result-note" id="vteNote">Алгоритмы применяются только у гемодинамически стабильных пациентов в соответствующем клиническом контексте.</p><button class="copy-button" data-copy="vte" disabled type="button">Копировать результат</button></div></div></div>
+<details><summary>Ограничения</summary><p>PERC — только для пациентов с уже установленной низкой клинической вероятностью ТЭЛА. Wells и D-димер не используются изолированно и не заменяют диагностический алгоритм.</p></details>
+</section>
+<section hidden class="calculator" data-search="curb65 crb65 пневмония тяжесть" data-tone="sage" id="pneumonia">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon sage"><div class="clay-glyph">65</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>CRB-65 / CURB-65</h2><p>Оценка тяжести внебольничной пневмонии у взрослых</p></div>
+<form id="pneumoniaForm" novalidate>
+<div class="field full"><label>Вариант</label><div class="segmented"><label><input checked name="pneumoniaMode" type="radio" value="crb"/><span>CRB-65</span></label><label><input name="pneumoniaMode" type="radio" value="curb"/><span>CURB-65</span></label></div></div><div class="field-grid">
+<div class="field"><label for="pneuAge">Возраст</label><div class="control-row"><input id="pneuAge" inputmode="numeric" placeholder="Например, 68"/><span class="unit-static">лет</span></div></div><div class="field"><label for="pneuRr">Частота дыхания</label><div class="control-row"><input id="pneuRr" inputmode="numeric" placeholder="Например, 24"/><span class="unit-static">/мин</span></div></div><div class="field"><label for="pneuSbp">Систолическое АД</label><div class="control-row"><input id="pneuSbp" inputmode="decimal" placeholder="Например, 118"/><span class="unit-static">мм рт. ст.</span></div></div><div class="field"><label for="pneuDbp">Диастолическое АД</label><div class="control-row"><input id="pneuDbp" inputmode="decimal" placeholder="Например, 72"/><span class="unit-static">мм рт. ст.</span></div></div><div class="field full mode-panel" hidden id="pneuUreaPanel"><label for="pneuUrea">Мочевина / BUN</label><div class="control-row"><input id="pneuUrea" inputmode="decimal" placeholder="Например, 6,2"/><select aria-label="Единица мочевины или BUN" id="pneuUreaUnit"><option selected value="mmol">ммоль/л</option><option value="bun">BUN мг/дл</option></select></div></div></div><div class="criteria-grid"><label class="criterion" for="pneuConfusion"><span class="criterion-copy"><strong>Новая спутанность сознания или дезориентация</strong><small>Либо AMTS ≤8.</small></span><input id="pneuConfusion" type="checkbox"/><span class="criterion-check">Да</span><span class="criterion-points">+1</span></label></div><div class="error" id="pneumoniaError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="pneumoniaForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box"><div class="result-row"><div><div class="result-label">Баллы</div><div class="result-number" id="pneumoniaResult">—</div><div class="result-unit" id="pneumoniaUnit">из 4</div></div><div class="result-interpretation" id="pneumoniaInterpretation">Введите показатели пациента.</div></div><p class="result-note" id="pneumoniaNote">Шкала дополняет клиническую оценку; гипоксемия, сепсис, декомпенсация сопутствующих болезней и невозможность принимать лекарства могут изменить тактику.</p><button class="copy-button" data-copy="pneumonia" disabled type="button">Копировать результат</button></div></div></div></section>
+<section hidden class="calculator" data-search="feverpain centor mcisaac боль в горле стрептококк" data-tone="apricot" id="sorethroat">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon apricot"><div class="clay-glyph">FP</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>FeverPAIN / Centor / McIsaac</h2><p>Оценка вероятности стрептококковой этиологии острой боли в горле</p></div>
+<form id="sorethroatForm" novalidate>
+<div class="field full"><label>Шкала</label><div class="segmented segmented-three"><label><input checked name="soreMode" type="radio" value="feverpain"/><span>FeverPAIN</span></label><label><input name="soreMode" type="radio" value="centor"/><span>Centor</span></label><label><input name="soreMode" type="radio" value="mcisaac"/><span>McIsaac</span></label></div></div><div class="mode-panel sore-panel" id="soreFeverPanel"><div class="criteria-grid"><label class="criterion" for="stFever">
+<span class="criterion-copy"><strong>Лихорадка в течение последних 24 часов</strong></span>
+<input id="stFever" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stPurulence">
+<span class="criterion-copy"><strong>Гнойный налёт или экссудат на миндалинах</strong></span>
+<input id="stPurulence" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stRapid">
+<span class="criterion-copy"><strong>Обращение в течение 3 дней от начала симптомов</strong></span>
+<input id="stRapid" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stInflamed">
+<span class="criterion-copy"><strong>Выраженное воспаление миндалин</strong></span>
+<input id="stInflamed" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stNoCoughCoryza">
+<span class="criterion-copy"><strong>Нет кашля и насморка</strong></span>
+<input id="stNoCoughCoryza" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label></div></div><div class="mode-panel sore-panel" hidden id="soreCentorPanel"><div class="criteria-grid"><label class="criterion" for="stExudate">
+<span class="criterion-copy"><strong>Тонзиллярный экссудат</strong></span>
+<input id="stExudate" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stNodes">
+<span class="criterion-copy"><strong>Болезненные передние шейные лимфоузлы</strong></span>
+<input id="stNodes" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stTemp">
+<span class="criterion-copy"><strong>Температура &gt;38 °C</strong></span>
+<input id="stTemp" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label>
+<label class="criterion" for="stNoCough">
+<span class="criterion-copy"><strong>Отсутствие кашля</strong></span>
+<input id="stNoCough" type="checkbox"/>
+<span class="criterion-check">Да</span><span class="criterion-points">+1</span>
+</label></div><div class="field mode-panel" hidden id="soreAgePanel"><label for="soreAge">Возраст для поправки McIsaac</label><div class="control-row"><input id="soreAge" inputmode="numeric" placeholder="Например, 34"/><span class="unit-static">лет</span></div></div></div><div class="error" id="sorethroatError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="sorethroatForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box"><div class="result-row"><div><div class="result-label">Баллы</div><div class="result-number" id="sorethroatResult">—</div><div class="result-unit" id="sorethroatUnit">из 5</div></div><div class="result-interpretation" id="sorethroatInterpretation">Выберите шкалу и отметьте критерии.</div></div><p class="result-note" id="sorethroatNote">Решение об антибиотике зависит от тяжести состояния, риска осложнений, локальных рекомендаций и совместного обсуждения.</p><button class="copy-button" data-copy="sorethroat" disabled type="button">Копировать результат</button></div></div></div></section>
+<section hidden class="calculator" data-search="скф цистатин c cystatin c ckd epi креатинин почки комбинированная формула" data-tone="aqua" id="egfrcys">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon aqua">
+<div class="clay-glyph">Cys</div></div></div><div class="calc-main">
+<div class="calc-heading">
+<h2>СКФ с цистатином C</h2>
+<p>CKD-EPI по цистатину C и комбинированная формула креатинин + цистатин C</p>
+</div>
+<form id="egfrcysForm" novalidate>
+<div class="field-grid">
+<div class="field">
+<label for="egfrcysAge">Возраст</label>
+<div class="control-row">
+<input aria-describedby="egfrcysError" id="egfrcysAge" inputmode="numeric" placeholder="Например, 54"/>
+<span class="unit-static">лет</span>
+</div></div><div class="field">
+<label>Пол при рождении</label>
+<div class="segmented">
+<label><input name="egfrcysSex" type="radio" value="female"/><span>Женский</span></label>
+<label><input name="egfrcysSex" type="radio" value="male"/><span>Мужской</span></label>
+</div></div><div class="field full">
+<label for="egfrcysCystatin">Цистатин C сыворотки</label>
+<div class="control-row">
+<input aria-describedby="egfrcysError" id="egfrcysCystatin" inputmode="decimal" placeholder="Например, 1,1"/>
+<span class="unit-static">мг/л</span>
+</div><div class="help">Используйте стандартизированный по IFCC анализ.</div></div><div class="field full">
+<label for="egfrcysCreatinine">Креатинин сыворотки — необязательно</label>
+<div class="control-row">
+<input id="egfrcysCreatinine" inputmode="decimal" placeholder="Для комбинированной формулы"/>
+<select aria-label="Единица креатинина" id="egfrcysCreatinineUnit">
+<option value="umol">мкмоль/л</option>
+<option value="mgdl">мг/дл</option>
+</select>
+</div><div class="help">
+              Если креатинин указан, основным результатом станет CKD-EPI creatinine–cystatin C 2021.
+            </div></div></div><div class="error" id="egfrcysError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Рассчитать</button>
+<button class="secondary reset-card" data-form="egfrcysForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label" id="egfrcysResultLabel">Расчётная СКФ</div><div class="result-number" id="egfrcysResult">—</div><div class="result-unit">мл/мин/1,73 м²</div></div><div class="result-interpretation" id="egfrcysInterpretation">
+            Введите возраст, пол и цистатин C.
+          </div></div><div class="metric-grid" id="egfrcysMetrics">
+<div>
+<small>CKD-EPI cystatin C 2012</small>
+<strong id="egfrcysOnlyMetric">—</strong>
+</div><div>
+<small>CKD-EPI creatinine–cystatin C 2021</small>
+<strong id="egfrcysCombinedMetric">нужен креатинин</strong>
+</div></div>
+<p class="result-note" id="egfrcysNote">
+          Одно значение СКФ не устанавливает диагноз ХБП. Учитывайте альбуминурию,
+          хронический характер изменений и факторы, влияющие на оба маркера.
+        </p>
+<button class="copy-button" data-copy="egfrcys" disabled type="button">
+          Копировать результат
+        </button>
+</div></div></div>
+<details>
+<summary>Формулы и клиническое применение</summary>
+<p>
+      При наличии обоих маркеров предпочтительна комбинированная CKD-EPI
+      creatinine–cystatin C 2021. Если креатинин не введён, рассчитывается
+      CKD-EPI cystatin C 2012.
+    </p>
+<ul>
+<li>формулы предназначены для взрослых;</li>
+<li>требуются стандартизированные методы измерения;</li>
+<li>при необходимости особенно высокой точности следует рассмотреть измеренную СКФ.</li>
+</ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="электролиты кщс кальций анионная разница натрий осмолярность вода delta ratio" data-tone="aqua" id="electrolytes">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon aqua"><div class="clay-glyph">Na</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>Электролиты, осмолярность и КЩС</h2><p>Набор часто используемых лабораторных расчётов</p></div>
+<form id="electrolytesForm" novalidate>
+<div class="field full"><label>Расчёт</label><div class="segmented segmented-five">
+<label><input checked name="electroMode" type="radio" value="calcium"/><span>Кальций</span></label>
+<label><input name="electroMode" type="radio" value="anion"/><span>АГ / Δ</span></label>
+<label><input name="electroMode" type="radio" value="sodium"/><span>Na + глюкоза</span></label>
+<label><input name="electroMode" type="radio" value="osm"/><span>Осмолярность</span></label>
+<label><input name="electroMode" type="radio" value="water"/><span>Дефицит воды</span></label>
+</div></div><div class="mode-panel electro-panel" id="electroCalciumPanel">
+<div class="field-grid">
+<div class="field"><label for="elCa">Общий кальций</label><div class="control-row"><input id="elCa" inputmode="decimal" placeholder="Например, 2,05"/><select aria-label="Единицы кальция" id="elCaUnit"><option value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select></div></div><div class="field"><label for="elCaAlb">Альбумин</label><div class="control-row"><input id="elCaAlb" inputmode="decimal" placeholder="Например, 31"/><select aria-label="Единицы альбумина" id="elCaAlbUnit"><option value="gl">г/л</option><option value="gdl">г/дл</option></select></div></div></div><div class="info-callout">Коррекция по альбумину является приближением. При критических состояниях, выраженной гипоальбуминемии или нарушениях КЩС предпочтительно измерение ионизированного кальция.</div></div><div class="mode-panel electro-panel" hidden id="electroAnionPanel">
+<div class="field-grid">
+<div class="field"><label for="elAgNa">Натрий</label><div class="control-row"><input id="elAgNa" inputmode="decimal" placeholder="140"/><span class="unit-static">ммоль/л = мЭкв/л</span></div></div><div class="field"><label for="elAgCl">Хлор</label><div class="control-row"><input id="elAgCl" inputmode="decimal" placeholder="104"/><span class="unit-static">ммоль/л = мЭкв/л</span></div></div><div class="field"><label for="elAgHco3">Бикарбонат</label><div class="control-row"><input id="elAgHco3" inputmode="decimal" placeholder="24"/><span class="unit-static">ммоль/л = мЭкв/л</span></div></div><div class="field"><label for="elAgAlb">Альбумин, необязательно</label><div class="control-row"><input id="elAgAlb" inputmode="decimal" placeholder="40"/><select aria-label="Единица альбумина" id="elAgAlbUnit"><option selected value="gl">г/л</option><option value="gdl">г/дл</option></select></div></div></div></div><div class="mode-panel electro-panel" hidden id="electroSodiumPanel">
+<div class="field-grid">
+<div class="field"><label for="elNaMeasured">Измеренный натрий</label><div class="control-row"><input id="elNaMeasured" inputmode="decimal" placeholder="Например, 128"/><span class="unit-static">ммоль/л = мЭкв/л</span></div></div><div class="field"><label for="elNaGlucose">Глюкоза</label><div class="control-row"><input id="elNaGlucose" inputmode="decimal" placeholder="Например, 22"/><select aria-label="Единицы глюкозы" id="elNaGluUnit"><option value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select></div></div><div class="field full"><label>Поправка на каждые 100 мг/дл выше 100</label><div class="segmented"><label><input checked name="elNaFactor" type="radio" value="1.6"/><span>1,6 ммоль/л</span></label><label><input name="elNaFactor" type="radio" value="2.4"/><span>2,4 ммоль/л</span></label></div></div></div></div><div class="mode-panel electro-panel" hidden id="electroOsmPanel">
+<div class="field-grid">
+<div class="field"><label for="elOsmNa">Натрий</label><div class="control-row"><input id="elOsmNa" inputmode="decimal" placeholder="140"/><span class="unit-static">ммоль/л = мЭкв/л</span></div></div><div class="field"><label for="elOsmGlu">Глюкоза</label><div class="control-row"><input id="elOsmGlu" inputmode="decimal" placeholder="5,5"/><select aria-label="Единицы глюкозы" id="elOsmGluUnit"><option value="mmol">ммоль/л</option><option value="mgdl">мг/дл</option></select></div></div><div class="field"><label for="elOsmUrea">Мочевина или BUN</label><div class="control-row"><input id="elOsmUrea" inputmode="decimal" placeholder="6,0"/><select aria-label="Показатель и единицы азота" id="elOsmUreaUnit"><option value="urea">мочевина ммоль/л</option><option value="bun">BUN мг/дл</option></select></div></div><div class="field"><label for="elOsmMeasured">Измеренная осмоляльность, необязательно</label><div class="control-row"><input id="elOsmMeasured" inputmode="decimal" placeholder="Например, 295"/><span class="unit-static">мОсм/кг</span></div></div></div></div><div class="mode-panel electro-panel" hidden id="electroWaterPanel">
+<div class="field-grid">
+<div class="field"><label for="elWaterWeight">Масса тела</label><div class="control-row"><input id="elWaterWeight" inputmode="decimal" placeholder="Например, 70"/><select aria-label="Единица массы тела" id="elWaterWeightUnit"><option selected value="kg">кг</option><option value="lb">фунты</option></select></div></div><div class="field"><label for="elWaterNa">Натрий</label><div class="control-row"><input id="elWaterNa" inputmode="decimal" placeholder="Например, 154"/><span class="unit-static">ммоль/л = мЭкв/л</span></div></div><div class="field full"><label for="elWaterCoeff">Коэффициент общей воды организма</label><div class="control-row"><select id="elWaterCoeff" style="width:100%;border-left:0"><option value="0.6">0,60 — взрослый мужчина</option><option value="0.5">0,50 — взрослая женщина / пожилой мужчина</option><option value="0.45">0,45 — пожилая женщина</option><option value="0.4">0,40 — выраженное ожирение или сниженная мышечная масса</option></select></div></div></div></div><div class="error" id="electrolytesError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="electrolytesForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box"><div class="result-row"><div><div class="result-label" id="electrolytesLabel">Скорректированный кальций</div><div class="result-number" id="electrolytesResult">—</div><div class="result-unit" id="electrolytesUnit">ммоль/л</div></div><div class="result-interpretation" id="electrolytesInterpretation">Выберите расчёт и заполните данные.</div></div><p class="result-note" id="electrolytesNote">Расчётные показатели необходимо сопоставлять с методом лаборатории и клинической ситуацией.</p><button class="copy-button" data-copy="electrolytes" disabled type="button">Копировать результат</button></div></div></div></section>
+<section hidden class="calculator" data-search="индекс ментцера анемия mcv rbc микроцитоз железодефицит талассемия" data-tone="coral" id="mentzer">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon coral">
+<div class="rbc-stack">
+<span class="rbc one"></span><span class="rbc two"></span><span class="rbc three"></span>
+</div></div></div><div class="calc-main">
+<div class="calc-heading">
+<h2>Индекс Ментцера</h2>
+<p>MCV и число эритроцитов</p>
+</div>
+<form id="mentzerForm" novalidate>
+<div class="field-grid">
+<div class="field">
+<label for="mentzerMcv">MCV</label>
+<div class="control-row">
+<input aria-describedby="mentzerError" id="mentzerMcv" inputmode="decimal" placeholder="Например, 72"/>
+<select aria-label="Единица MCV" disabled><option>фл</option></select>
+</div></div><div class="field">
+<label for="mentzerRbc">Эритроциты, RBC</label>
+<div class="control-row">
+<input aria-describedby="mentzerError" id="mentzerRbc" inputmode="decimal" placeholder="Например, 5,4"/>
+<select aria-label="Единица числа эритроцитов" id="mentzerRbcUnit"><option selected value="trillion">10¹²/л</option><option value="million">10⁶/мкл</option></select></div></div></div><div class="error" id="mentzerError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Рассчитать</button>
+<button class="secondary reset-card" data-form="mentzerForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">Индекс Ментцера</div><div class="result-number" id="mentzerResult">—</div><div class="result-unit">безразмерный индекс</div></div><div class="result-interpretation" id="mentzerInterpretation">Введите MCV и число эритроцитов.</div></div>
+<p class="result-note" id="mentzerNote">Это ориентир при микроцитозе, а не самостоятельный диагностический тест.</p>
+<button class="copy-button" data-copy="mentzer" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Формула и интерпретация</summary>
+<p><strong>Индекс Ментцера = MCV (фл) / RBC (10¹²/л).</strong></p>
+<ul>
+<li>&lt;13 — больше соответствует носительству β-талассемии;</li>
+<li>&gt;13 — больше соответствует железодефицитной анемии;</li>
+<li>около 13 — пограничный результат.</li>
+</ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="насыщение трансферрина ожсс железо tsat трансферрин" data-tone="gold" id="tsat">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon gold">
+<div class="tube-wrap">
+<span class="tube-cap"></span><span class="tube"></span><span class="iron-drop"></span>
+</div></div></div><div class="calc-main">
+<div class="calc-heading">
+<h2>% насыщения трансферрина</h2>
+<p>Железный статус (TSAT)</p>
+</div>
+<form id="tsatForm" novalidate>
+<div class="field full">
+<label>Способ расчёта</label>
+<div class="segmented">
+<label><input checked name="tsatMode" type="radio" value="tibc"/><span>По ОЖСС</span></label>
+<label><input name="tsatMode" type="radio" value="transferrin"/><span>По трансферрину</span></label>
+</div></div><div class="mode-panel" id="tsatTibcPanel">
+<div class="field-grid" style="margin-top:15px">
+<div class="field">
+<label for="tsatIronTibc">Сывороточное железо</label>
+<div class="control-row">
+<input aria-describedby="tsatError" id="tsatIronTibc" inputmode="decimal" placeholder="Например, 12"/>
+<select aria-label="Единица железа" id="tsatIronTibcUnit">
+<option value="umol">мкмоль/л</option>
+<option value="ugdl">мкг/дл</option>
+</select>
+</div></div><div class="field">
+<label for="tsatTibc">ОЖСС</label>
+<div class="control-row">
+<input aria-describedby="tsatError" id="tsatTibc" inputmode="decimal" placeholder="Например, 65"/>
+<select aria-label="Единица ОЖСС" id="tsatTibcUnit">
+<option value="umol">мкмоль/л</option>
+<option value="ugdl">мкг/дл</option>
+</select>
+</div></div></div></div><div class="mode-panel" hidden id="tsatTransferrinPanel">
+<div class="field-grid" style="margin-top:15px">
+<div class="field">
+<label for="tsatIronTf">Сывороточное железо</label>
+<div class="control-row">
+<input aria-describedby="tsatError" id="tsatIronTf" inputmode="decimal" placeholder="Например, 12"/>
+<select aria-label="Единица железа" id="tsatIronTfUnit">
+<option value="umol">мкмоль/л</option>
+<option value="ugdl">мкг/дл</option>
+</select>
+</div></div><div class="field">
+<label for="tsatTransferrin">Трансферрин</label>
+<div class="control-row">
+<input aria-describedby="tsatError" id="tsatTransferrin" inputmode="decimal" placeholder="Например, 3,0"/>
+<select aria-label="Единица трансферрина" id="tsatTransferrinUnit">
+<option value="gl">г/л</option>
+<option value="mgdl">мг/дл</option>
+</select>
+</div></div></div></div><div class="error" id="tsatError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Рассчитать</button>
+<button class="secondary reset-card" data-form="tsatForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">Насыщение трансферрина</div><div class="result-number" id="tsatResult">—</div><div class="result-unit">%</div></div><div class="result-interpretation" id="tsatInterpretation">Введите показатели обмена железа.</div></div>
+<p class="result-note" id="tsatNote">Интерпретируйте вместе с ферритином, воспалительными маркерами и клиническим контекстом; референсы лабораторий различаются.</p>
+<button class="copy-button" data-copy="tsat" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Формулы и единицы</summary>
+<ul>
+<li>По ОЖСС: TSAT = железо / ОЖСС × 100%.</li>
+<li>По трансферрину: TSAT = железо (мкмоль/л) × 3,98 / трансферрин (г/л).</li>
+<li>Если выбраны другие единицы, приложение автоматически выполняет преобразование.</li>
+</ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="maf 5 metabolic fibrosis waist bmi" data-tone="berry" id="maf5">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon berry"><div class="clay-glyph">M5</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>MAF-5</h2><p>Metabolic Dysfunction–Associated Fibrosis 5</p></div>
+<form id="maf5Form" novalidate>
+<div class="field-grid">
+<div class="field"><label for="maf5Waist">Окружность талии</label><div class="control-row"><input id="maf5Waist" inputmode="decimal" placeholder="Например, 104"/><select aria-label="Единица окружности талии" id="maf5WaistUnit"><option selected value="cm">см</option><option value="in">дюймы</option></select></div></div><div class="field"><label for="maf5Bmi">ИМТ</label><div class="control-row"><input id="maf5Bmi" inputmode="decimal" placeholder="Например, 31"/><span class="unit-static">кг/м²</span></div></div><div class="field"><label for="maf5Ast">АСТ</label><div class="control-row"><input id="maf5Ast" inputmode="decimal" placeholder="Например, 38"/><span class="unit-static">Ед/л</span></div></div><div class="field"><label for="maf5Platelets">Тромбоциты</label><div class="control-row"><input id="maf5Platelets" inputmode="decimal" placeholder="Например, 210"/><select aria-label="Единица тромбоцитов" id="maf5PlateletsUnit"><option selected value="giga">10⁹/л</option><option value="thousand">10³/мкл</option></select></div></div><div class="field full"><label>Сахарный диабет</label><div class="segmented"><label><input checked name="maf5Diabetes" type="radio" value="0"/><span>Нет</span></label><label><input name="maf5Diabetes" type="radio" value="1"/><span>Да</span></label></div></div></div><div class="error" id="maf5Error" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="maf5Form" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">MAF-5</div><div class="result-number" id="maf5Result">—</div><div class="result-unit">индекс</div></div><div class="result-interpretation" id="maf5Interpretation">Введите антропометрию и лабораторные данные.</div></div>
+<p class="result-note" id="maf5Note">Возраст не входит в формулу. Шкала разрабатывалась для популяции с метаболической дисфункцией.</p>
+<button class="copy-button" data-copy="maf5" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Формула и пороги</summary>
+<p>−11,3674 + талия×0,0282 − ИМТ×0,1761 + талия×ИМТ×0,0019 + 2,0762 при диабете + ln(АСТ)×2,9207 − тромбоциты×0,0059.</p>
+<ul><li>&lt;0 — низкий риск;</li><li>0–&lt;1 — промежуточный;</li><li>≥1 — высокий.</li></ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="liverpro liver fibrosis probability" data-tone="lemon" id="liverpro">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon lemon"><div class="clay-glyph">LP</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>LiverPRO</h2><p>Интерпретатор уже рассчитанной вероятности</p></div>
+<form id="liverproForm" novalidate>
+<div class="field-grid one">
+<div class="field"><label for="liverproValue">Готовый результат LiverPRO</label><div class="control-row"><input id="liverproValue" inputmode="decimal" placeholder="Например, 18"/><span class="unit-static">%</span></div></div></div><div class="info-callout"><strong>Почему не рассчитывается внутри:</strong> LiverPRO — CE-маркированный коммерческий динамический алгоритм, использующий разные комбинации возраста и 3–9 лабораторных показателей. Полные коэффициенты не опубликованы для независимого локального воспроизведения.</div><div class="error" id="liverproError" role="alert"></div><div class="actions"><button class="primary" type="submit">Интерпретировать</button><button class="secondary reset-card" data-form="liverproForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">Вероятность</div><div class="result-number" id="liverproResult">—</div><div class="result-unit">%</div></div><div class="result-interpretation" id="liverproInterpretation">Введите результат из сертифицированной системы.</div></div>
+<p class="result-note" id="liverproNote">Опубликованные пороги: &lt;25% — rule-out; &gt;65% — rule-in; между ними — промежуточная зона.</p>
+<button class="copy-button" data-copy="liverpro" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Пороговая интерпретация</summary>
+<ul><li>&lt;25% — низкая вероятность клинически значимого фиброза;</li><li>25–65% — промежуточный результат;</li><li>&gt;65% — высокая вероятность, рассматривается направление к специалисту.</li></ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="pro c3 adapt score fibrosis" data-tone="blue" id="adapt">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon blue"><div class="clay-glyph">C3</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>PRO-C3 / ADAPT</h2><p>Официальная формула ADAPT для Elecsys PRO-C3</p></div>
+<form id="adaptForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="adaptAge">Возраст</label><div class="control-row"><input id="adaptAge" inputmode="numeric" placeholder="18–100"/><span class="unit-static">лет</span></div></div><div class="field"><label for="adaptProc3">Elecsys PRO-C3</label><div class="control-row"><input id="adaptProc3" inputmode="decimal" placeholder="20–500"/><span class="unit-static">нг/мл</span></div></div><div class="field"><label for="adaptPlatelets">Тромбоциты</label><div class="control-row"><input id="adaptPlatelets" inputmode="decimal" placeholder="Например, 220"/><select aria-label="Единица тромбоцитов" id="adaptPlateletsUnit"><option selected value="giga">10⁹/л</option><option value="thousand">10³/мкл</option></select></div></div><div class="field"><label>Сахарный диабет 2 типа</label><div class="segmented"><label><input checked name="adaptDiabetes" type="radio" value="0"/><span>Нет</span></label><label><input name="adaptDiabetes" type="radio" value="1"/><span>Да</span></label></div></div></div><div class="error" id="adaptError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="adaptForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">ADAPT</div><div class="result-number" id="adaptResult">—</div><div class="result-unit">баллы</div></div><div class="result-interpretation" id="adaptInterpretation">Введите возраст, PRO-C3 и тромбоциты.</div></div>
+<p class="result-note" id="adaptNote">Используйте только значение Elecsys PRO-C3: результаты других методов нельзя подставлять в эту версию алгоритма.</p>
+<button class="copy-button" data-copy="adapt" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Формула и пороги</summary>
+<p>ADAPT = exp(log10((возраст × PRO-C3) / √тромбоцитов)) + 1 при диабете.</p>
+<ul><li>&lt;9 — нет или лёгкий фиброз;</li><li>≥9 — риск как минимум значимого фиброза F2–F4;</li><li>≥10 — риск продвинутого фиброза F3–F4;</li><li>≥11 — риск цирроза F4.</li></ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="stop bang apnea храп сон" data-tone="teal" id="stopbang">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon teal"><div class="clay-glyph">SB</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>STOP-Bang</h2><p>Скрининг риска обструктивного апноэ сна</p></div>
+<form id="stopbangForm" novalidate>
+<div class="question-list">
+<div class="question-item">
+<div><strong>S — Громкий храп</strong></div>
+<select aria-label="Громкий храп" id="stopbang1"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>T — Дневная усталость или сонливость</strong></div>
+<select aria-label="Дневная усталость или сонливость" id="stopbang2"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>O — Наблюдавшиеся остановки дыхания во сне</strong></div>
+<select aria-label="Наблюдавшиеся остановки дыхания во сне" id="stopbang3"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>P — Артериальная гипертензия</strong></div>
+<select aria-label="Артериальная гипертензия" id="stopbang4"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>B — ИМТ &gt;35 кг/м²</strong></div>
+<select aria-label="ИМТ &gt;35 кг/м²" id="stopbang5"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>A — Возраст &gt;50 лет</strong></div>
+<select aria-label="Возраст &gt;50 лет" id="stopbang6"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>N — Окружность шеи &gt;40 см</strong></div>
+<select aria-label="Окружность шеи &gt;40 см" id="stopbang7"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div><div class="question-item">
+<div><strong>G — Мужской пол</strong></div>
+<select aria-label="Мужской пол" id="stopbang8"><option disabled selected value="">Выберите ответ</option><option value="0">Нет — 0</option><option value="1">Да — 1</option></select>
+</div></div><div class="license-note">Краткие критерии приведены для подсчёта. При клиническом использовании соблюдайте условия правообладателя STOP-Bang.</div><div class="error" id="stopbangError" role="alert"></div><div class="actions"><button class="primary" type="submit">Рассчитать</button><button class="secondary reset-card" data-form="stopbangForm" type="button">Очистить</button></div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">STOP-Bang</div><div class="result-number" id="stopbangResult">—</div><div class="result-unit">из 8</div></div><div class="result-interpretation" id="stopbangInterpretation">Отметьте критерии.</div></div>
+<p class="result-note" id="stopbangNote">Шкала оценивает вероятность СОАС, но не подтверждает диагноз и не оценивает центральное апноэ.</p>
+<button class="copy-button" data-copy="stopbang" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Интерпретация</summary>
+<ul><li>0–2 — низкий риск;</li><li>3–4 — промежуточный риск;</li><li>5–8 — высокий риск;</li><li>при сумме 3–4 риск также высокий, если ≥2 ответов «да» в STOP и положителен хотя бы один критерий: мужской пол, ИМТ &gt;35 или окружность шеи &gt;40 см.</li></ul>
+</details>
+</section>
+<section hidden class="calculator" data-search="epworth ess сонливость sleepiness" data-tone="sand" id="epworth">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon sand"><div class="clay-glyph">ESS</div></div></div><div class="calc-main">
+<div class="calc-heading">
+<h2>Шкала сонливости Эпворта</h2>
+<p>Оценка вероятности задремать в восьми повседневных ситуациях</p>
+</div>
+<form class="epworth-questionnaire" id="epworthForm" novalidate>
+<div class="info-callout">
+<strong>Как отвечать:</strong> оцени вероятность не просто почувствовать усталость, а именно задремать или заснуть.
+                    Используй обычное состояние за последние недели.
+                  </div><div class="question-list">
+<div class="question-item">
+<div><strong>1. Сидя и читая</strong><small>Вероятность задремать во время спокойного чтения</small></div>
+<select aria-label="Сидя и читая" id="epworth1"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>2. Во время просмотра телевизора или видео</strong><small>Когда вы спокойно смотрите экран</small></div>
+<select aria-label="Во время просмотра телевизора или видео" id="epworth2"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>3. Сидя без активности в общественном месте</strong><small>Например, в театре, на лекции или собрании</small></div>
+<select aria-label="Сидя без активности в общественном месте" id="epworth3"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>4. Будучи пассажиром автомобиля около часа без остановки</strong><small>Не за рулём</small></div>
+<select aria-label="Будучи пассажиром автомобиля около часа без остановки" id="epworth4"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>5. Лёжа днём, когда есть возможность отдохнуть</strong><small>Например, после обеда</small></div>
+<select aria-label="Лёжа днём, когда есть возможность отдохнуть" id="epworth5"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>6. Сидя и разговаривая с человеком</strong><small>Во время обычной беседы</small></div>
+<select aria-label="Сидя и разговаривая с человеком" id="epworth6"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>7. Спокойно сидя после обеда без алкоголя</strong><small>После дневного приёма пищи</small></div>
+<select aria-label="Спокойно сидя после обеда без алкоголя" id="epworth7"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div><div class="question-item">
+<div><strong>8. За рулём во время короткой остановки в пробке</strong><small>Когда автомобиль несколько минут не движется</small></div>
+<select aria-label="За рулём во время короткой остановки в пробке" id="epworth8"><option disabled selected value="">Выберите ответ</option><option value="0">Не задремлю — 0</option><option value="1">Небольшая вероятность — 1</option><option value="2">Умеренная вероятность — 2</option><option value="3">Высокая вероятность — 3</option></select>
+</div></div><div class="info-callout epworth-scale-key">
+<strong>Баллы:</strong> 0 — не задремлю; 1 — небольшая вероятность; 
+                    2 — умеренная вероятность; 3 — высокая вероятность.
+                  </div><div class="error" id="epworthError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Рассчитать</button>
+<button class="secondary reset-card" data-form="epworthForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">ESS</div><div class="result-number" id="epworthResult">—</div><div class="result-unit">из 24</div></div><div class="result-interpretation" id="epworthInterpretation">Ответь на все восемь вопросов.</div></div>
+<p class="result-note" id="epworthNote">Шкала оценивает субъективную дневную сонливость, но не определяет её причину.</p>
+<button class="copy-button" data-copy="epworth" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Интерпретация результата</summary>
+<ul>
+<li>0–10 — обычный диапазон дневной сонливости;</li>
+<li>11–12 — лёгкая чрезмерная дневная сонливость;</li>
+<li>13–15 — умеренная чрезмерная дневная сонливость;</li>
+<li>16–24 — выраженная чрезмерная дневная сонливость.</li>
+</ul>
+<p>Формулировки ситуаций адаптированы для интерфейса. Результат следует оценивать вместе с длительностью сна, лекарствами, режимом, симптомами апноэ и другими возможными причинами сонливости.</p>
+</details>
+</section>
+<section hidden class="calculator" data-search="frax перелом остеопороз шейка бедра денситометрия dxa" data-tone="gold" id="frax">
+<div class="calc-card">
+<div class="visual-column"><div aria-hidden="true" class="clay-icon gold"><div class="clay-glyph">FX</div></div></div><div class="calc-main">
+<div class="calc-heading"><h2>FRAX®</h2><p>Подготовка данных для официальной country-specific модели риска переломов</p></div>
+<form id="fraxForm" novalidate>
+<div class="field-grid">
+<div class="field"><label for="fraxAge">Возраст</label><div class="control-row"><input id="fraxAge" inputmode="numeric" placeholder="40–90"/><span class="unit-static">лет</span></div></div><div class="field"><label>Пол при рождении</label><div class="segmented"><label><input name="fraxSex" type="radio" value="female"/><span>Женский</span></label><label><input name="fraxSex" type="radio" value="male"/><span>Мужской</span></label></div></div><div class="field"><label for="fraxWeight">Масса тела</label><div class="control-row"><input id="fraxWeight" inputmode="decimal" placeholder="Например, 70"/><select aria-label="Единицы массы тела" id="fraxWeightUnit"><option value="kg">кг</option><option value="lb">фунты</option></select></div></div><div class="field"><label for="fraxHeight">Рост</label><div class="control-row"><input id="fraxHeight" inputmode="decimal" placeholder="Например, 170"/><select aria-label="Единицы роста" id="fraxHeightUnit"><option value="cm">см</option><option value="in">дюймы</option></select></div></div><div class="field full"><label for="fraxTscore">T-критерий шейки бедра — необязательно</label><div class="control-row"><input id="fraxTscore" inputmode="decimal" placeholder="Например, −2,1"/><span class="unit-static">SD</span></div></div></div><div class="criteria-grid">
+<label class="criterion" for="fraxPrev"><span class="criterion-copy"><strong>Перелом во взрослом возрасте</strong></span><input id="fraxPrev" type="checkbox"/><span class="criterion-check">Да</span></label>
+<label class="criterion" for="fraxParent"><span class="criterion-copy"><strong>Перелом бедра у родителя</strong></span><input id="fraxParent" type="checkbox"/><span class="criterion-check">Да</span></label>
+<label class="criterion" for="fraxSmoke"><span class="criterion-copy"><strong>Текущее курение</strong></span><input id="fraxSmoke" type="checkbox"/><span class="criterion-check">Да</span></label>
+<label class="criterion" for="fraxGc"><span class="criterion-copy"><strong>Системные глюкокортикоиды</strong><small>≥5 мг преднизолона ≥3 месяцев.</small></span><input id="fraxGc" type="checkbox"/><span class="criterion-check">Да</span></label>
+<label class="criterion" for="fraxRa"><span class="criterion-copy"><strong>Ревматоидный артрит</strong></span><input id="fraxRa" type="checkbox"/><span class="criterion-check">Да</span></label>
+<label class="criterion" for="fraxSecondary"><span class="criterion-copy"><strong>Вторичный остеопороз</strong></span><input id="fraxSecondary" type="checkbox"/><span class="criterion-check">Да</span></label>
+<label class="criterion" for="fraxAlcohol"><span class="criterion-copy"><strong>Алкоголь ≥3 единиц в сутки</strong></span><input id="fraxAlcohol" type="checkbox"/><span class="criterion-check">Да</span></label>
+</div><div class="error" id="fraxError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Подготовить данные</button>
+<a class="secondary external-tool-link" href="https://www.fraxplus.org/calculation-tool" rel="noopener noreferrer" target="_blank">Открыть официальный FRAX</a>
+<button class="secondary reset-card" data-form="fraxForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row"><div><div class="result-label">ИМТ для FRAX</div><div class="result-number" id="fraxResult">—</div><div class="result-unit">кг/м²</div></div><div class="result-interpretation" id="fraxInterpretation">Заполните антропометрию и факторы риска.</div></div>
+<p class="result-note" id="fraxNote">10-летняя вероятность зависит от страны и должна рассчитываться в официальной модели.</p>
+<button class="copy-button" data-copy="frax" disabled type="button">Копировать данные</button>
+</div></div></div>
+<details><summary>Почему расчёт открывается отдельно</summary><p>FRAX использует country-specific модели и зарегистрированный алгоритм. Приложение помогает собрать исходные данные, но не имитирует закрытую математическую модель.</p></details>
+</section>
+<section hidden class="calculator" data-search="mini mental mmse когнитивный статус" data-tone="aqua" id="mmse">
+<div class="calc-card">
+<div class="visual-column">
+<div aria-hidden="true" class="clay-icon aqua"><div class="clay-glyph">30</div></div></div><div class="calc-main">
+<div class="calc-heading">
+<h2>Mini-Mental State Examination — MMSE</h2>
+<p>Структурированная оценка когнитивных функций, 0–30 баллов</p>
+</div>
+<form class="mmse-questionnaire" id="mmseForm" novalidate>
+<div class="info-callout">
+<strong>Как заполнять:</strong> отмечайте каждый правильно выполненный пункт. 
+                    Неотмеченное задание автоматически считается как 0 баллов. 
+                    Три слова произнесите чётко, примерно по одному слову в секунду, и используйте те же слова при отсроченном воспроизведении.
+                  </div><section class="mmse-domain">
+<div class="mmse-domain-head">
+<div><h3>1. Ориентация во времени</h3><p>Задайте пять вопросов о текущей дате и времени.</p></div>
+<span>5 баллов</span>
+</div><div class="mmse-items">
+<label class="mmse-item" for="mmse_t1">
+<span class="mmse-item-copy"><strong>Текущий год</strong></span>
+<input class="mmse-point" id="mmse_t1" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_t2">
+<span class="mmse-item-copy"><strong>Время года</strong></span>
+<input class="mmse-point" id="mmse_t2" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_t3">
+<span class="mmse-item-copy"><strong>Число месяца</strong></span>
+<input class="mmse-point" id="mmse_t3" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_t4">
+<span class="mmse-item-copy"><strong>День недели</strong></span>
+<input class="mmse-point" id="mmse_t4" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_t5">
+<span class="mmse-item-copy"><strong>Текущий месяц</strong></span>
+<input class="mmse-point" id="mmse_t5" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+</div></section>
+<section class="mmse-domain">
+<div class="mmse-domain-head">
+<div><h3>2. Ориентация в месте</h3><p>Задайте пять вопросов о месте, где проходит обследование.</p></div>
+<span>5 баллов</span>
+</div><div class="mmse-items">
+<label class="mmse-item" for="mmse_p1">
+<span class="mmse-item-copy"><strong>Страна</strong></span>
+<input class="mmse-point" id="mmse_p1" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_p2">
+<span class="mmse-item-copy"><strong>Регион или область</strong></span>
+<input class="mmse-point" id="mmse_p2" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_p3">
+<span class="mmse-item-copy"><strong>Город или населённый пункт</strong></span>
+<input class="mmse-point" id="mmse_p3" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_p4">
+<span class="mmse-item-copy"><strong>Учреждение или место обследования</strong></span>
+<input class="mmse-point" id="mmse_p4" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_p5">
+<span class="mmse-item-copy"><strong>Этаж, кабинет или комната</strong></span>
+<input class="mmse-point" id="mmse_p5" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+</div></section>
+<section class="mmse-domain">
+<div class="mmse-domain-head">
+<div><h3>3. Непосредственное запоминание</h3><p>Назовите три несвязанных слова и попросите сразу повторить их.</p></div>
+<span>3 баллов</span>
+</div><div class="mmse-items">
+<label class="mmse-item" for="mmse_r1">
+<span class="mmse-item-copy"><strong>Слово 1: «яблоко»</strong></span>
+<input class="mmse-point" id="mmse_r1" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_r2">
+<span class="mmse-item-copy"><strong>Слово 2: «стол»</strong></span>
+<input class="mmse-point" id="mmse_r2" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_r3">
+<span class="mmse-item-copy"><strong>Слово 3: «монета»</strong></span>
+<input class="mmse-point" id="mmse_r3" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+</div></section>
+<section class="mmse-domain">
+<div class="mmse-domain-head">
+<div><h3>4. Внимание и счёт</h3><p>Попросите последовательно пять раз вычитать 7, начиная со 100. Один балл за каждый правильный ответ.</p></div>
+<span>5 баллов</span>
+</div><div class="mmse-items">
+<label class="mmse-item" for="mmse_a1">
+<span class="mmse-item-copy"><strong>100 − 7 = 93</strong></span>
+<input class="mmse-point" id="mmse_a1" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_a2">
+<span class="mmse-item-copy"><strong>93 − 7 = 86</strong></span>
+<input class="mmse-point" id="mmse_a2" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_a3">
+<span class="mmse-item-copy"><strong>86 − 7 = 79</strong></span>
+<input class="mmse-point" id="mmse_a3" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_a4">
+<span class="mmse-item-copy"><strong>79 − 7 = 72</strong></span>
+<input class="mmse-point" id="mmse_a4" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_a5">
+<span class="mmse-item-copy"><strong>72 − 7 = 65</strong></span>
+<input class="mmse-point" id="mmse_a5" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+</div></section>
+<section class="mmse-domain">
+<div class="mmse-domain-head">
+<div><h3>5. Отсроченное воспроизведение</h3><p>Попросите назвать три слова, предъявленные ранее, без подсказок.</p></div>
+<span>3 баллов</span>
+</div><div class="mmse-items">
+<label class="mmse-item" for="mmse_c1">
+<span class="mmse-item-copy"><strong>Вспомнил слово «яблоко»</strong></span>
+<input class="mmse-point" id="mmse_c1" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_c2">
+<span class="mmse-item-copy"><strong>Вспомнил слово «стол»</strong></span>
+<input class="mmse-point" id="mmse_c2" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_c3">
+<span class="mmse-item-copy"><strong>Вспомнил слово «монета»</strong></span>
+<input class="mmse-point" id="mmse_c3" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+</div></section>
+<section class="mmse-domain">
+<div class="mmse-domain-head">
+<div><h3>6. Речь, команды и конструктивный праксис</h3><p>Выполните задания последовательно.</p></div>
+<span>9 баллов</span>
+</div><div aria-label="Письменная команда" class="mmse-reading-card">
+                      ЗАКРОЙТЕ ГЛАЗА
+                    </div><div class="mmse-stimulus">
+<div>
+<strong>Образец для копирования</strong>
+<small>Попросите пациента воспроизвести обе пересекающиеся фигуры.</small>
+</div>
+<svg aria-label="Два пересекающихся пятиугольника" role="img" viewbox="0 0 240 120">
+<polygon points="32,91 20,44 60,16 104,43 88,91"></polygon>
+<polygon points="100,91 84,43 128,16 169,44 155,91"></polygon>
+</svg>
+</div><div class="mmse-items">
+<label class="mmse-item" for="mmse_l1">
+<span class="mmse-item-copy"><strong>Назвал часы</strong><small>Покажите часы или изображение часов.</small></span>
+<input class="mmse-point" id="mmse_l1" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l2">
+<span class="mmse-item-copy"><strong>Назвал карандаш</strong><small>Покажите карандаш или ручку.</small></span>
+<input class="mmse-point" id="mmse_l2" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l3">
+<span class="mmse-item-copy"><strong>Повторил фразу</strong><small>«Никаких если, и или но».</small></span>
+<input class="mmse-point" id="mmse_l3" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l4">
+<span class="mmse-item-copy"><strong>Взял лист правой рукой</strong><small>Первый этап трёхступенчатой команды.</small></span>
+<input class="mmse-point" id="mmse_l4" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l5">
+<span class="mmse-item-copy"><strong>Сложил лист пополам</strong><small>Второй этап команды.</small></span>
+<input class="mmse-point" id="mmse_l5" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l6">
+<span class="mmse-item-copy"><strong>Положил лист на стол или пол</strong><small>Третий этап команды.</small></span>
+<input class="mmse-point" id="mmse_l6" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l7">
+<span class="mmse-item-copy"><strong>Выполнил письменную команду</strong><small>Покажите надпись «ЗАКРОЙТЕ ГЛАЗА».</small></span>
+<input class="mmse-point" id="mmse_l7" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l8">
+<span class="mmse-item-copy"><strong>Написал осмысленное предложение</strong><small>В предложении должны быть подлежащее и сказуемое.</small></span>
+<input class="mmse-point" id="mmse_l8" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+<label class="mmse-item" for="mmse_l9">
+<span class="mmse-item-copy"><strong>Скопировал пересекающиеся пятиугольники</strong><small>Две фигуры с сохранением пересечения.</small></span>
+<input class="mmse-point" id="mmse_l9" type="checkbox" value="1"/>
+<span class="mmse-check">1 балл</span>
+</label>
+</div></section>
+<div class="error" id="mmseError" role="alert"></div><div class="actions">
+<button class="primary" type="submit">Рассчитать</button>
+<button class="secondary reset-card" data-form="mmseForm" type="button">Очистить</button>
+</div></form>
+<div aria-live="polite" class="result-box">
+<div class="result-row">
+<div>
+<div class="result-label">Общий балл</div><div class="result-number" id="mmseResult">—</div><div class="result-unit">из 30</div></div><div class="result-interpretation" id="mmseInterpretation">Отметьте правильно выполненные задания.</div></div>
+<p class="result-note" id="mmseNote">Результат зависит от возраста, образования, языка, слуха, зрения, моторных ограничений и условий проведения.</p>
+<button class="copy-button" data-copy="mmse" disabled type="button">Копировать результат</button>
+</div></div></div>
+<details>
+<summary>Интерпретация и ограничения</summary>
+<ul>
+<li>24–30 — выраженное когнитивное снижение по суммарному баллу менее вероятно;</li>
+<li>20–23 — возможное лёгкое когнитивное снижение;</li>
+<li>10–19 — возможное умеренное когнитивное снижение;</li>
+<li>0–9 — выраженное снижение по суммарному результату.</li>
+</ul>
+<p>Пороговые значения ориентировочные. MMSE не устанавливает диагноз деменции и может быть недостаточно чувствительным при лёгких, исполнительных или лобно-подкорковых нарушениях. Учитывайте образование, родной язык, культурный контекст, делирий, депрессию и сенсорные ограничения.</p>
+</details>
+</section>
+</main><script src="medical-calculators-registry.js"></script><script src="patient-sharing.js"></script><script src="medical-calculators.js"></script></body></html>
