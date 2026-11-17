@@ -1612,8 +1612,15 @@ body.focused-invalid .invalid-focused-view { display:block; }
 <script>
 function collectPatientResultText(root) {
   if (!root) return '';
+  const visibleError = Array.from(root.querySelectorAll('.error-msg'))
+    .some(el => el.offsetParent !== null && (el.innerText || el.textContent || '').trim());
+  if (visibleError) return '';
   return Array.from(root.querySelectorAll('[id$="-result"], [id$="-res"], [id^="cl-res-"]'))
     .filter(el => el.offsetParent !== null && getComputedStyle(el).display !== 'none')
+    .filter(el => {
+      const children = Array.from(el.children || []);
+      return !(children.length === 1 && children[0].matches('div[style*="color:#c0392b"], div[style*="color: #c0392b"]'));
+    })
     .map(el => el.innerText || el.textContent || '')
     .filter(Boolean)
     .join('\n')
@@ -1630,14 +1637,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const pane = document.querySelector('.tab-pane.active');
       return collectPatientResultText(pane);
     }});
+    const refreshPatientResult = () => requestAnimationFrame(() => {
+      const pane = document.querySelector('.tab-pane.active');
+      if (!pane) return;
+      window.PatientSharing.markResultReady(collectPatientResultText(pane));
+    });
     document.addEventListener('click', event => {
-      if (event.target.closest('.calc-btn, .sub-calc-btn')) {
-        requestAnimationFrame(() => {
-          const result = window.PatientSharing && document.querySelector('.tab-pane.active');
-          if (!result) return;
-          window.PatientSharing.markResultReady(collectPatientResultText(result));
-        });
-      }
+      if (event.target.closest('.calc-btn, .sub-calc-btn')) refreshPatientResult();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return;
+      const pane = document.querySelector('.tab-pane.active');
+      if (pane && ['pane-s2', 'pane-op', 'pane-dl', 'pane-pr'].includes(pane.id)) refreshPatientResult();
     });
     document.addEventListener('input', event => {
       if (event.target.matches('input, select, textarea')) window.PatientSharing.resetResult();
@@ -1756,6 +1767,7 @@ document.addEventListener('DOMContentLoaded', applyEmbeddedViewMode);
 const sexState = { s2:'male', op:'male', pr:'male' };
 
 function setSex(tab, s) {
+  if (window.PatientSharing) window.PatientSharing.resetResult();
   sexState[tab] = s;
   document.getElementById(tab+'-m').classList.toggle('active', s==='male');
   document.getElementById(tab+'-f').classList.toggle('active', s==='female');
@@ -2083,6 +2095,7 @@ let crUnit = 'umol';  // 'umol' | 'mgdl'
 let bmiCache = null, waistCache = null;
 
 function setCrUnit(u) {
+  if (window.PatientSharing) window.PatientSharing.resetResult();
   crUnit = u;
   document.getElementById('cr-umol-btn').classList.toggle('active', u==='umol');
   document.getElementById('cr-mgdl-btn').classList.toggle('active', u==='mgdl');

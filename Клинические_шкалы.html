@@ -324,7 +324,7 @@
         renderSourcePreview();
       }
 
-      async function shareOrTelegram(shareData) {
+      async function shareOrTelegram(shareData, allowTelegramFallback = true) {
         if (navigator.share) {
           try {
             await navigator.share(shareData);
@@ -333,12 +333,23 @@
             if (error && error.name === 'AbortError') return;
           }
         }
+        if (!allowTelegramFallback) {
+          const copyText = `${shareData.text}\n${shareData.url}`;
+          try {
+            await navigator.clipboard.writeText(copyText);
+            sendResultButton.textContent = 'Скопировано — вставьте в сообщение';
+          } catch (error) {
+            window.prompt('Скопируйте результат и вставьте его в сообщение:', copyText);
+          }
+          return;
+        }
         const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareData.text)}`;
         window.open(telegramUrl, '_blank', 'noopener');
       }
 
       function patientLink() {
         const url = new URL(window.location.href);
+        url.search = '';
         url.searchParams.set('tool', toolId);
         url.searchParams.set('patient', '1');
         url.hash = '';
@@ -563,7 +574,7 @@
       sendResultButton.addEventListener('click', () => {
         if (!lastResult.complete) return;
         const text = `${tool.title}\nРезультат: ${lastResult.score}\nИнтерпретация: ${lastResult.label}`;
-        shareOrTelegram({ title: `Результат: ${tool.title}`, text, url: patientLink() });
+        shareOrTelegram({ title: `Результат: ${tool.title}`, text, url: patientLink() }, false);
       });
       init();
     })();
